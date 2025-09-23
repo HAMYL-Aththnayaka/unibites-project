@@ -27,7 +27,7 @@ UniBites is a web application designed to simplify food ordering and management 
 2. Install dependencies:
   npm install
 3. Start the server:
-  npm start
+ 
 4. Open the app in your browser at http://localhost:xxxx
 
 # Future Enhancements
