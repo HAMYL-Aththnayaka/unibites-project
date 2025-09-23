@@ -1,10 +1,11 @@
-# 🌙 Yasas Lasitha | Binary & Heartbeats 💻
-
-😄 **:- Come smile with me — the journey is brighter together!**
 
 ## UniBites - University Canteen Ordering System
 
+
+
+
 UniBites is a web application designed to simplify food ordering and management for university students and staff. It provides an intuitive interface to browse menus, place orders, and manage canteen operations efficiently.
+Lets Leap in to the future
 
 ### Features
 - Browse the daily menu with images and prices  
