@@ -15,12 +15,12 @@ const port = process.env.PORT | 3000
 //middleware set
 app.use(express.json())
 app.use(cors) // used t help connect backend to frontend
-app.use(foodRoute) 
 
 //Conection
 connectDB().then(()=>{
     
     //api
+    app.use(foodRoute) 
     
     
     
