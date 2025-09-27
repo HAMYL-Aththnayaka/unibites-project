@@ -1,3 +1,4 @@
+//helping hand backend
 import express from 'express'
 import {addFood, listFood, removeFood} from '../Controller/helpingHandFoodController.js'
 import multer from 'multer'
