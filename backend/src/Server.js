@@ -5,23 +5,25 @@ import dotenv from 'dotenv'
 import { connectDB } from './Config/db.js';
 dotenv.config();
 import foodRoute from './Routes/foodRoutes.js'
+import helpingHand from './Routes/helpingHandRoute.js'
 
 
 
 //app config
 const app = express();
-const port = process.env.PORT | 3000
+const port = process.env.PORT || 3000
 
 //middleware set
 app.use(express.json())
-app.use(cors) // used t help connect backend to frontend
+app.use(cors()) // used t help connect backend to frontend
 
 //Conection
 connectDB().then(()=>{
     
     //api
-    app.use(foodRoute) 
-    
+    app.use("/api/foods",foodRoute) 
+    app.use("/api/HelpingHand/foods",helpingHand) 
+    app.use('/images',express.static('uploads'))
     
     
     

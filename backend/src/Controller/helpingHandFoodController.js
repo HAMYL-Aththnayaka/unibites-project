@@ -1,13 +1,11 @@
-import foodModel from "../Models/foodModel.js";
+import helpingHandModel from "../Models/helpingHandModel.js";
 import fs from 'fs'
 
-
-//add food item
 export const addFood = async(req,res)=>{
     try{
         let image_filename =`${req.file.filename}`;
 
-        const food = new foodModel({
+        const food = new helpingHandModel({
             name:req.body.name,
             description:req.body.description,
             price:req.body.price,
@@ -30,7 +28,7 @@ export const addFood = async(req,res)=>{
 //list foods
 export const listFood = async(req,res)=>{
     try{
-        const result = await foodModel.find({});
+        const result = await helpingHandModel.find({});
 
         if(result.length > 0){
             res.status(200).send({
@@ -64,7 +62,7 @@ export const removeFood = async (req, res) => {
             });
         }
 
-        const food = await foodModel.findById(id);
+        const food = await helpingHandModel.findById(id);
         
         if (!food) {
             return res.status(404).send({
@@ -74,7 +72,7 @@ export const removeFood = async (req, res) => {
         }
         fs.unlink(`src/uploads/${food.image}`,()=>{})
         
-        const deletedResult = await foodModel.findByIdAndDelete(id);
+        const deletedResult = await helpingHandModel.findByIdAndDelete(id);
         if (!deletedResult) {
             return res.status(405).send({
                 success: false,
