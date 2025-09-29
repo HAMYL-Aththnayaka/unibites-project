@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import './Add.css';
+import api from '../../lib/axios'
 import { assets } from '../../assets/assets';
 
-const Add = () => {
+const Add = () => { 
+  const url = 'http:/ocalhost:3000';
   const [image, setImage] = useState(null);
   const [data, setData] = useState({
     name: '',
     description: '',
     price: '',
-    category: 'Salad',
+    catagory: 'Salad',
     canteen: 'Applied-Canteen'
   });
 
@@ -18,13 +20,35 @@ const Add = () => {
     else setData(prev => ({ ...prev, [name]: value }));
   };
 
-  useEffect(()=>{
-    console.log(data)
-  },[data])
+  const onSubmitHandler =async (event)=>{
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('name',data.name);
+    formData.append('description',data.description);
+    formData.append('price',Number(data.price));
+    formData.append('catagory',data.catagory);
+    formData.append('canteen',data.canteen);
+    formData.append('image',image);
+
+    const response = await api.post('/add',formData)
+
+    if(response.data.success){
+          setData({
+                      name: '',
+                      description: '',
+                      price: '',
+                      catagory: 'salad',
+                      canteen: 'Applied-Canteen'
+          })
+          setImage(false)
+    }else{
+    }
+    
+  }
 
   return (
     <div className="add">
-      <form className="form">
+      <form className="form" onSubmit={onSubmitHandler} >
 
        
         <div className="add-img-upload flex-col">
@@ -68,7 +92,7 @@ const Add = () => {
         <div className="add-catagory-price">
           <div className="add-catagory flex-col">
             <p>Product Category</p>
-            <select name="category" value={data.category} onChange={onChangeHandler}>
+            <select name="category" value={data.catagory} onChange={onChangeHandler}>
               <option value="Salad">Salad</option>
               <option value="Rolls">Rolls</option>
               <option value="Dessert">Dessert</option>
