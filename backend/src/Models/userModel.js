@@ -10,8 +10,8 @@ const userSchema = new mongoose.Schema({
         required:true,
         unique:true
     },
-    passworf:{
-        typeString,
+    password:{
+        type:String,
         required:true
     },
     cartData:{

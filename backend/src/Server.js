@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import { connectDB } from './Config/db.js';
 dotenv.config();
 import foodRoute from './Routes/foodRoutes.js'
+import userRouter from './Routes/userRoute.js'
 import helpingHand from './Routes/helpingHandRoute.js'
 
 
@@ -24,7 +25,7 @@ connectDB().then(()=>{
     app.use("/api/foods",foodRoute) 
     app.use("/api/HelpingHand/foods",helpingHand) 
     app.use('/images',express.static('src/uploads'))  // this specifuy the cc uploads  file name 
-   ;
+   app.use('/api/user',userRouter)
 
     
     
