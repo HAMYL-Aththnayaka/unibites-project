@@ -12,6 +12,7 @@ export const addFood = async(req,res)=>{
             description:req.body.description,
             price:req.body.price,
             catagory:req.body.catagory,
+            canteen:req.body.canteen,
             image:image_filename
         });
 
@@ -72,7 +73,15 @@ export const removeFood = async (req, res) => {
                 alert: "Id not valid"
             });
         }
-        fs.unlink(`src/uploads/${food.image}`,()=>{})
+
+
+        fs.unlink(`src/uploads/${food.image}`, (err) => {
+            if (err) console.error("Failed to delete image:", err);
+            else console.log("Image deleted successfully");
+        });
+
+        //fs.unlink(`src/uploads/${food.image}`,()=>{})
+        //above comented code == error
         
         const deletedResult = await foodModel.findByIdAndDelete(id);
         if (!deletedResult) {
@@ -95,4 +104,3 @@ export const removeFood = async (req, res) => {
         });
     }
 };
-

@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import './Add.css';
 import api from '../../lib/axios'
 import { assets } from '../../assets/assets';
+import { toast } from 'react-toastify';
 
 const Add = () => { 
-  const url = 'http:/ocalhost:3000';
+ 
   const [image, setImage] = useState(null);
   const [data, setData] = useState({
     name: '',
     description: '',
     price: '',
-    catagory: 'Salad',
+    catagory: '',
     canteen: 'Applied-Canteen'
   });
 
@@ -37,11 +38,24 @@ const Add = () => {
                       name: '',
                       description: '',
                       price: '',
-                      catagory: 'salad',
+                      catagory: '',
                       canteen: 'Applied-Canteen'
           })
           setImage(false)
+          toast.success(" Food Added Successfuly !!!", {
+  style: {
+    background: "black",
+    color: "white",
+    fontWeight: "bold",
+    fontSize: "16px",
+  },
+  progressStyle: {
+    background: "lime",
+  },
+});
+
     }else{
+      toast.error("Something Went Wrong Food Was Not Adedd !!!")
     }
     
   }
@@ -92,7 +106,7 @@ const Add = () => {
         <div className="add-catagory-price">
           <div className="add-catagory flex-col">
             <p>Product Category</p>
-            <select name="category" value={data.catagory} onChange={onChangeHandler}>
+            <select name="catagory" value={data.catagory} onChange={onChangeHandler}>
               <option value="Salad">Salad</option>
               <option value="Rolls">Rolls</option>
               <option value="Dessert">Dessert</option>

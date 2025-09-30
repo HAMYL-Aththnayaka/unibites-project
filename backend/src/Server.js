@@ -23,8 +23,9 @@ connectDB().then(()=>{
     //api
     app.use("/api/foods",foodRoute) 
     app.use("/api/HelpingHand/foods",helpingHand) 
-    app.use('/images',express.static('uploads'))
-    
+    app.use('/images',express.static('src/uploads'))  // this specifuy the cc uploads  file name 
+   ;
+
     
     
     //making sure only after database is connected ,

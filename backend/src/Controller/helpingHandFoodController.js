@@ -10,6 +10,7 @@ export const addFood = async(req,res)=>{
             description:req.body.description,
             price:req.body.price,
             catagory:req.body.catagory,
+            canteen:req.body.canteen,
             image:image_filename
         });
 

@@ -22,6 +22,10 @@ const HelpingfoodSchema = new mongoose.Schema({
     catagory:{
         type:String,
         required:true
+    },
+     canteen:{
+        type:String,
+        required:true
     }
 })
 

@@ -1,3 +1,4 @@
+import { createRequire } from 'module';
 import mongoose from 'mongoose'
 
 
@@ -20,6 +21,10 @@ const foodSchema = new mongoose.Schema({
         required:true
     },
     catagory:{
+        type:String,
+        required:true
+    },
+    canteen:{
         type:String,
         required:true
     }
