@@ -8,5 +8,29 @@ const orderSchem= new mongoose.Schema({
     items:{
         type:Array,
         required
+    },
+    amount:{
+        type:Number,
+        required:true
+    },
+    address:{
+        type:Object,
+        required:true
+    },
+    status:{
+        type:String,
+        default:"Food Processig"
+    },
+    date:{
+        type:DataTransfer,
+        default:Date.now()
+    },
+    payment:{
+        type:Boolean,
+        default:false
     }
 })
+
+const orderModel = mongoose.models.order || mongoose.model('order',orderSchema)
+
+export default orderModel;

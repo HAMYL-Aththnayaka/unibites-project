@@ -1,22 +1,81 @@
 import React, { useContext, useState } from 'react'
 import './PlaceOrder.css'
 import { StoreContext } from '../../context/StoreContext'
+import api from '../../lib/axios'
 
 const PlaceOrder = () => {
-  const { getaTotalCartAmmount } = useContext(StoreContext)
+  const { getaTotalCartAmmount, token, food_list, cartItems } = useContext(StoreContext)
   const [paymentMethod, setPaymentMethod] = useState('online')
   const [orderType, setOrderType] = useState('delivery')
 
-  const deliveryFee = orderType === 'delivery' && paymentMethod === 'online' ? 2 : 0
+  const [data, setData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    nearest_town: '',
+    street: '',
+    address: '',
+    phone_number: ''
+  })
+
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target
+    setData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const deliveryFee = orderType === 'delivery' && paymentMethod === 'online' ? 200 : 0
   const subtotal = getaTotalCartAmmount()
   const total = subtotal + deliveryFee
 
+  const placeOrder = async (e) => {
+    e.preventDefault()
+
+    try {
+      // Prepare items array for backend
+      const items = food_list
+        .filter(item => cartItems[item._id] > 0)
+        .map(item => ({
+          name: item.name,
+          price: item.price,
+          quantity: cartItems[item._id]
+        }))
+
+      const orderData = {
+        userId: token,           // or actual user id
+        items: items,
+        amount: total,
+        address: data,
+        paymentMethod,
+        orderType
+      }
+
+      // Send order to backend
+      const res = await api.post('api/order/place', orderData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      if (res.data.success) {
+        if (paymentMethod === 'online') {
+          // Redirect user to PayPal checkout
+          window.location.href = res.data.approvalUrl
+        } else {
+          alert("Order placed! Pay at the counter.")
+        }
+      } else {
+        alert("Something went wrong while placing order.")
+      }
+    } catch (err) {
+      console.error(err)
+      alert("Error placing order.")
+    }
+  }
+
   return (
-    <form className='place-order'>
+    <form className='place-order' onSubmit={placeOrder}>
       <div className='place-order-left'>
         <p className='title'>Order Information</p>
 
-        {/* Delivery or Dine-in selection */}
+        {/* Order Type Selection */}
         <div className="payment-method">
           <p>Select Order Type:</p>
           <label>
@@ -41,22 +100,24 @@ const PlaceOrder = () => {
           </label>
         </div>
 
+        {/* Delivery Address */}
         {orderType === 'delivery' && (
           <>
             <div className="multi-fields">
-              <input type="text" placeholder='First Name'/>
-              <input type="text" placeholder='Last Name'/>
+              <input name='firstName' value={data.firstName} onChange={onChangeHandler} type="text" placeholder='First Name' required/>
+              <input name='lastName' value={data.lastName} onChange={onChangeHandler} type="text" placeholder='Last Name' required/>
             </div>
-            <input type="email" placeholder='Email Address'/>
-            <input type="text" placeholder='Nearest Town'/>
+            <input name='email' value={data.email} onChange={onChangeHandler} type="email" placeholder='Email Address' required/>
+            <input name='nearest_town' value={data.nearest_town} onChange={onChangeHandler} type="text" placeholder='Nearest Town' required/>
             <div className="multi-fields">
-              <input type="text" placeholder='Street'/>
-              <input type="text" placeholder='Address'/>
+              <input name='street' value={data.street} onChange={onChangeHandler} type="text" placeholder='Street' required/>
+              <input name='address' value={data.address} onChange={onChangeHandler} type="text" placeholder='Address' required/>
             </div>
-            <input type="text" placeholder='Phone Number'/>
+            <input name='phone_number' value={data.phone_number} onChange={onChangeHandler} type="text" placeholder='Phone Number' required/>
           </>
         )}
 
+        {/* Payment Method */}
         <div className="payment-method">
           <p>Select Payment Method:</p>
           <label>
@@ -67,7 +128,7 @@ const PlaceOrder = () => {
               checked={paymentMethod === 'online'} 
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
-            Pay Online
+            Pay Online (PayPal)
           </label>
           <label>
             <input 
@@ -86,19 +147,19 @@ const PlaceOrder = () => {
         <div className="cart-total">
           <h2>Cart Total</h2>
           <div className="cart-total-summary">
-            {orderType === 'delivery' && (
+            {orderType === 'delivery' && paymentMethod === 'online' && (
               <div className="cart-total-details">
                 <p>Delivery fee</p>
-                <p>LKR {deliveryFee}0.00</p>
+                <p>LKR {deliveryFee}.00</p>
               </div>
             )}
             <hr />
             <div className="cart-total-details">
-              <b>Total </b>
-              <b>LKR {total}0.00</b>
+              <b>Total</b>
+              <b>LKR {total}.00</b>
             </div>
           </div>
-          <button>Proceed to Payment</button>
+          <button type="submit">Proceed to Payment</button>
         </div>
       </div>
     </form>
