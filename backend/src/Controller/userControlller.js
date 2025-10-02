@@ -55,32 +55,52 @@ export const registerUser = async (req, res) => {
     const { name, password, email, role } = req.body;
 
     if (!name || !email || !password || !role) {
-      return res.status(403).send({ success: false, alert: "All fields are required" });
+      return res.status(403).send({ success: false, 
+        alert: "All fields are required" 
+      });
     }
 
     if (!validator.isEmail(email)) {
-      return res.status(403).send({ success: false, alert: "Please enter a valid email" });
+      return res.status(403).send({ success: 
+        false, alert: "Please enter a valid email" 
+      });
     }
 
     if (password.length < 8 || !password.match(/[!@#$%^&*]/)) {
-      return res.status(403).send({ success: false, alert: "Password must be at least 8 chars + special character" });
+      return res.status(403).send({ success: false,
+         alert: "Password must be at least 8 chars + special character"
+         });
     }
 
     const exists = await userModel.findOne({ email });
     if (exists) {
-      return res.status(403).send({ success: false, alert: "User already exists" });
+      return res.status(403).send({
+         success: false,
+          alert: "User already exists"
+         });
     }
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = new userModel({ name, email, password: hashedPassword, role });
+    const newUser = new userModel({ 
+      name, email,
+       password: hashedPassword, role 
+      });
     const user = await newUser.save();
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY);
+    const token = jwt.sign({
+       id: user._id
+       }, process.env.JWT_SECRET_KEY);
 
-    res.status(200).send({ success: true, token });
+    res.status(200).send({ 
+      success: true,
+      token
+     });
   } catch (err) {
-    res.status(500).send({ success: false, alert: err.toString() });
+    res.status(500).send({ 
+      success: false, 
+      alert: err.toString()
+     });
   }
 };

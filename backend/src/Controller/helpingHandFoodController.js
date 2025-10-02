@@ -22,7 +22,7 @@ export const addFood = async(req,res)=>{
     }catch(err){
         console.log(err.toString());
         res.status(500).send({
-            Alert:"Food Not added"
+            Alert:err.toString()
         })
     }
 }
@@ -45,7 +45,7 @@ export const listFood = async(req,res)=>{
     }catch(err){
         res.status(500).send({
             success:false,
-            Alert:'Error'
+            Alert:err.toString()
         })
     }
 }
@@ -90,7 +90,7 @@ export const removeFood = async (req, res) => {
         console.log(err.toString());
         res.status(500).send({
             success: false,
-            alert: "Error"
+            alert:err.toString()
         });
     }
 };

@@ -100,7 +100,7 @@ export const removeFood = async (req, res) => {
         console.log(err.toString());
         res.status(500).send({
             success: false,
-            alert: "Error"
+            alert: err.toString()
         });
     }
 };
