@@ -18,6 +18,7 @@ const PlaceOrder = () => {
     phone_number: ''
   })
 
+
   const onChangeHandler = (e) => {
     const { name, value } = e.target
     setData((prev) => ({ ...prev, [name]: value }))
@@ -32,25 +33,29 @@ const PlaceOrder = () => {
 
     try {
       // Prepare items array for backend
-      const items = food_list
-        .filter(item => cartItems[item._id] > 0)
+      const items = food_list.filter(item => cartItems[item._id] > 0)
         .map(item => ({
           name: item.name,
           price: item.price,
-          quantity: cartItems[item._id]
-        }))
+          quantity: cartItems[item._id],
+        
+        }
+      )
+    )
+// console.log(item)
+
 
       const orderData = {
-        userId: token,           // or actual user id
+        userId: token,           
         items: items,
         amount: total,
         address: data,
         paymentMethod,
         orderType
       }
-
+   
       // Send order to backend
-      const res = await api.post('api/order/place', orderData, {
+      const res = await api.post('api/order/create-paypal-order', orderData, {
         headers: { Authorization: `Bearer ${token}` }
       })
 
@@ -75,7 +80,6 @@ const PlaceOrder = () => {
       <div className='place-order-left'>
         <p className='title'>Order Information</p>
 
-        {/* Order Type Selection */}
         <div className="payment-method">
           <p>Select Order Type:</p>
           <label>
@@ -100,7 +104,7 @@ const PlaceOrder = () => {
           </label>
         </div>
 
-        {/* Delivery Address */}
+    
         {orderType === 'delivery' && (
           <>
             <div className="multi-fields">
@@ -117,7 +121,6 @@ const PlaceOrder = () => {
           </>
         )}
 
-        {/* Payment Method */}
         <div className="payment-method">
           <p>Select Payment Method:</p>
           <label>

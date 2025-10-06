@@ -1,8 +1,9 @@
-import express from 'express'
-import authMiddleware from '../'
-import { placeOrder } from "../Controller/orderController";
+import express from "express";
+import { createPayPalOrder, capturePayPalOrder } from "../Controller/orderController.js";
 
-const orderROuter = express.Router();
-orderROuter.post('/place',authMiddleware,placeOrder);
+const router = express.Router();
 
-export default orderROuter;
+router.post("/create-paypal-order", createPayPalOrder);
+router.post("/capture-paypal-order", capturePayPalOrder);
+
+export default router;
