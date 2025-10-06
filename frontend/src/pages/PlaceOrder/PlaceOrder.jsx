@@ -55,7 +55,7 @@ const PlaceOrder = () => {
       }
    
       // Send order to backend
-      const res = await api.post('api/order/create-paypal-order', orderData, {
+      const res = await api.post('/api/order/create-paypal-order', orderData, {
         headers: { Authorization: `Bearer ${token}` }
       })
 
