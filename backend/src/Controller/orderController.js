@@ -1,4 +1,6 @@
-import paypal from '@paypal/checkout-server-sdk';
+import pkg from '@paypal/checkout-server-sdk';
+const paypal = pkg;
+const { payments } = pkg;
 
 // Setup PayPal client (Sandbox for testing)
 const environment = new paypal.core.SandboxEnvironment(
@@ -62,3 +64,39 @@ export const capturePayPalOrder = async (req, res) => {
         error: err.message });
   }
 };
+export const  veruifyOrder = async(erq,res)=>{
+  const {orderId ,success} = req.body;
+  try{
+      if (success =="true"){
+        await orderModel.findByIdAndUpdate(orderId,{payment:true});
+        res.json({success:true,
+          message:"Paid"
+        })
+      }else{
+        await orderModel.findByIdAndDelete(orderId);
+                res.json({
+          success:false,
+          message:"Not Paid"
+        })
+      }
+  }catch(err){
+
+  }
+  
+}
+export const userOrder = async(req,res)=>{
+    try{
+      const orders = await orderMOdel.find({userId :req.nody.userId})
+      res.status(200).send({
+        success:true,
+        data:orders
+      })
+    }catch(err){
+      res.status(500).send({
+        success:false,
+        alert:'error'
+      })
+    }
+}
+
+//userOrders fro front End
