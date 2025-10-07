@@ -1,58 +1,75 @@
-import React from 'react'
-import './Myorders.css'
-import { useState } from 'react'
-import api from '../../lib/axios.js'
-import { useContext } from 'react'
-import { StoreContext } from '../../context/StoreContext'
-import { useEffect } from 'react'
-import { assets } from '../../assets/assets'
-
-
+import React, { useState, useEffect, useContext } from 'react';
+import './Myorders.css';
+import api from '../../lib/axios.js';
+import { StoreContext } from '../../context/StoreContext';
+import { assets } from '../../assets/assets';
 
 const Myorders = () => {
+  const [data, setData] = useState([]);
+  const { token } = useContext(StoreContext);
 
-    const [data,setData] =useState([]);
-    const {token} = useContext(StoreContext)
-
-    const fetchOrder = async()=>{
-        const response = await axios.post('api/order/userorder',{},
-             {
-                headers: { Authorization: `Bearer ${token}` }
-            })
-        setData(response.data.data);
-    }
-
-    useEffect(()=>{
-        if(token){
-            fetchOrder();
+  const fetchOrder = async () => {
+    try {
+      const response = await api.post(
+        'api/order/userorder',
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-    },[token])
+      );
+      setData(response.data.data || []); // Ensure data exists
+    } catch (err) {
+      console.error('Error fetching orders:', err);
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      fetchOrder();
+    }
+  }, [token]);
 
   return (
-    <div className='my-orders'>
-        <h2>Myorders</h2>
-         <div className="container">
-            {data.map((order,index)=>{
-                <div key={index} className='my-orders-order'>
-                    <img src={assets.parcel_icon} alt="" />
-                    <p>
-                        {order.items.map((item,index)=>{
-                            if(index === order.items.length-1){
-                               
-                            }else{
-                                 return item.name+ ' X ' +item.quantity+' , '
-                            }
-                        })}
-                    </p>
-                    <p>
-                        LKR{order.amount}.00
-                    </p>
-                    <p>Items :{order.items.length}</p>
-                </div>
-            })}
-         </div>
-    </div>
-  )
-}
+    <div className="my-orders">
+      <h2>My Orders</h2>
+      <div className="container">
+        {data.length === 0 ? (
+          <p>No orders found.</p>
+        ) : (
+          data.map((order, index) => (
+            <div key={index} className="my-orders-order">
+              <img src={assets.parcel_icon} alt="Parcel Icon" />
 
-export default Myorders
+              <p>
+                {order.items.map((item, i) => (
+                  <span key={i}>
+                    {item.name} × {item.quantity}
+                    {i !== order.items.length - 1 && ', '}
+                  </span>
+                ))}
+              </p>
+
+              <p>LKR {order.amount}.00</p>
+              <p>Items: {order.items.length}</p>
+              <p>
+                <span
+                  className={
+                    order.status === 'Delivered'
+                      ? 'status delivered'
+                      : 'status pending'
+                  }
+                >
+                  &#x25cf;
+                </span>{' '}
+                <b>{order.status}</b>
+              </p>
+              <button>Track Order</button>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Myorders;
