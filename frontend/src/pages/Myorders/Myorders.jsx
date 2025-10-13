@@ -66,7 +66,7 @@ const Myorders = () => {
                 </span>{' '}
                 <b>{order.status}</b>
               </p>
-              <button>Track Order</button>
+              <button onClick={()=>fetchOrder()}>Track Order</button>
             </div>
           ))
         )}

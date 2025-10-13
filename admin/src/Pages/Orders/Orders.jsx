@@ -23,6 +23,15 @@ const Orders = () => {
     }
   }
 
+  const  statusHandeler = async(event,orderId)=>{
+      const response = await api.get('/order/status',{
+        orderId,
+        statu:event.target.status
+      }) 
+      if(response.data.success){
+        await fetchAllOrders();
+      }
+  }
     useEffect(()=>{
         fetchAllOrders()
     },[])
@@ -46,15 +55,26 @@ const Orders = () => {
                     })}
                 </p>
                 <p className='order-item.name'>{order.address.firstName}</p>
+                <div className="order-item-name">
+                <p>{order.address.street +' , '}</p>
+                <p>{order.address.City +' , '}</p>
+                </div>
+                <p className='order-item phone'>{order.address.phone}</p>
             </div>
+            <p>
+              Items:{order.items.length}
+            </p>
+            <p>LKR {order.ammount}</p>
+            <select onChange={(event)=>statusHandeler(event,order._id)} value={order.status}>
+              <option value="Food Processing">Food Processing</option>
+              <option value="Out for Delivery">Out for Delivery</option>
+              <option value="Deleiverd">Deleiverd</option>
+            </select>
           </div>
         ))}
       </div>
   </div>
-)
-
-}
+)}
 
 export default Orders
 
-//9.32
