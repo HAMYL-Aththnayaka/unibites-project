@@ -33,8 +33,11 @@ const Myorders = () => {
     <div className="my-orders">
       <h2>My Orders</h2>
       <div className="container">
-        {data.length === 0 ? (
-          <p>No orders found.</p>
+        {data.length == 0 ? (
+        <div>
+         <p>No orders found.</p>
+          <img src={assets.parcel_icon}/>
+          </div>
         ) : (
           data.map((order, index) => (
             <div key={index} className="my-orders-order">

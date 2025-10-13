@@ -53,6 +53,8 @@ const createToken =(id)=>{
 export const registerUser = async (req, res) => {
   try {
     const { name, password, email, role } = req.body;
+    console.log("Request body:", req.body);
+
 
     if (!name || !email || !password || !role) {
       return res.status(403).send({ success: false, 
@@ -74,6 +76,7 @@ export const registerUser = async (req, res) => {
 
     const exists = await userModel.findOne({ email });
     if (exists) {
+     console.error("Email Already Taken")
       return res.status(403).send({
          success: false,
           alert: "User already exists"

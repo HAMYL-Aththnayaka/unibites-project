@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './PlaceOrder.css'
 import { StoreContext } from '../../context/StoreContext'
 import api from '../../lib/axios'
@@ -74,6 +74,15 @@ const PlaceOrder = () => {
       alert("Error placing order.")
     }
   }
+
+    const navigate = useNavigate();
+  useEffect(()=>{
+    if(!token){
+      navigate('/cart')
+    }else if(getaTotalCartAmmount()===0){
+      navigate('/cart')
+    }
+  },[token])
 
   return (
     <form className='place-order' onSubmit={placeOrder}>

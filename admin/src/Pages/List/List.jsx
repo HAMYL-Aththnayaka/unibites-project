@@ -9,7 +9,7 @@ const List = () => {
   const [selectedCanteen, setSelectedCanteen] = useState("Applied-Canteen");
 
   const fetchList = async()=>{
-    const response = await api.get('/list')
+    const response = await api.get('/foods/list')
     
     if (response.data.success){
       setList(response.data.Data || [])

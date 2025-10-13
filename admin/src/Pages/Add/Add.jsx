@@ -31,7 +31,7 @@ const Add = () => {
     formData.append('canteen',data.canteen);
     formData.append('image',image);
 
-    const response = await api.post('/add',formData)
+    const response = await api.post('/foods/add',formData)
 
     if(response.data.success){
           setData({

@@ -2,6 +2,8 @@ import pkg from '@paypal/checkout-server-sdk';
 const paypal = pkg;
 const { payments } = pkg;
 
+import orderModel from '../Models/orderModel.js'
+
 // Setup PayPal client (Sandbox for testing)
 const environment = new paypal.core.SandboxEnvironment(
   process.env.PAYPAL_CLIENT_ID,
@@ -99,4 +101,22 @@ export const userOrder = async(req,res)=>{
     }
 }
 
+
 //userOrders fro front End
+
+//listing orders fr admin pannel
+
+export const listOrders = async(req,res)=>{
+    try{
+        const orders = await orderModel.find({})
+        res.status(200).send({
+          success:true,
+          data:orders
+        })
+    }catch(err){
+      console.log(err);
+      res.status(500).send({
+        alert:err.toString()
+      })
+    }
+}
