@@ -8,6 +8,7 @@ import userRouter from './Routes/userRoute.js'
 import helpingHand from './Routes/helpingHandRoute.js'
 import cartRouter from './Routes/cartRoute.js'
 import orderROuter from './Routes/orderRoute.js';
+import contactRoute from './Routes/contactRoute.js'
 
 
 //app config
@@ -30,6 +31,7 @@ connectDB().then(()=>{
     app.use('/api/user',userRouter)
     app.use('/api/cart',cartRouter)
     app.use('/api/order',orderROuter)
+    app.use('/api/contact',contactRoute)
     
     //making sure only after database is connected ,
     //the serverr starts to run

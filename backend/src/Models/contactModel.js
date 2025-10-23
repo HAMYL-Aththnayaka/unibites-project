@@ -1,34 +1,35 @@
+
 import mongoose from 'mongoose'
 
 
-const HelpingfoodSchema = new mongoose.Schema({
+const ConatactSchema = new mongoose.Schema({
     name:{
         type:String,
         required:true
     },
-    description:{
+    registration:{
 
         type:String,
         required:true
     },
-    price:{
+    faculty:{
         type:Number,
         required:true
     },
-    image:{
+    reason:{
         type:String,
         required:true
     },
-    catagory:{
+    recomendation:{
         type:String,
         required:true
     },
-     canteen:{
+    scholership:{
         type:String,
         required:true
     }
 })
 
-const helpingHandModel = mongoose.models.HelpingfoodSchema || mongoose.model('helpingHand',HelpingfoodSchema);
+const contactModel = mongoose.models.ContactAdmin || mongoose.model('ContactAdmin',ConatactSchema);
 
-export default helpingHandModel
+export default contactModel

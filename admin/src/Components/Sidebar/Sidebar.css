@@ -22,7 +22,10 @@ gap:20px;
     border-radius: 3px 0px 0px 3px;
     cursor:pointer;
 }
- 
+ .imgg{
+    height: 30px;
+ }
+
 .sidebar-option.active{
     background-color:#eaf0b4;
     border-color: tomato;

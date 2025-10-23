@@ -1,22 +1,92 @@
-.page-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+/* Loading state */
+.Question {
+  background-color: #f9f9f9;       
+  padding: 20px;                   
+  margin: 20px auto;               
+  max-width: 600px;                
+  border-radius: 12px;             
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;              
+  border-left: 5px solid #007bff;  /* subtle accent for loading */
 }
 
-.main-content {
-  flex: 1; /* takes all available space */
-  padding: 20px 8vw;
+.Question h3 {
+  color: #333;
+  margin-bottom: 15px;
 }
 
-.helping-hand h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 20px;
+.Question p {
+  color: #555;
+  font-size: 16px;
+  margin-bottom: 15px;
 }
 
-.helping-hand-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
+.Question button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.Question button:hover {
+  background-color: #0056b3;
+}
+
+/* Empty state */
+.Question1 {
+  background-color: #fff3cd;       
+  padding: 20px;                   
+  margin: 20px auto;               
+  max-width: 600px;                
+  border-radius: 12px;             
+  border: 1px solid #ffeeba;      
+  text-align: center;              
+  border-left: 5px solid #ffc107; /* accent for empty state */
+}
+
+.Question1 h3 {
+  color: #856404;                  
+  margin-bottom: 15px;
+}
+
+.Question1 p {
+  color: #856404;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.Question1 button {
+  background-color: #ffc107;       
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.Question1 button:hover {
+  background-color: #e0a800;       
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .Question, .Question1 {
+    margin: 15px;
+    padding: 15px;
+  }
+
+  .Question button, .Question1 button {
+    width: 100%;
+  }
+
+  .food-display-list1 {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+  }
 }

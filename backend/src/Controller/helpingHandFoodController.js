@@ -27,26 +27,18 @@ export const addFood = async(req,res)=>{
     }
 }
 //list foods
-export const listFood = async(req,res)=>{
-    try{
+export const listFood = async(req,res) => {
+    try {
         const result = await helpingHandModel.find({});
-
-        if(result.length > 0){
-            res.status(200).send({
-                success:true,
-                Data:result
-            })
-        }else{
-            res.status(404).send({
-                success:true,
-                Alert:'No Data Found'
-            })
-        }
-    }catch(err){
+        res.status(200).send({
+            success: true,
+            Data: result
+        });
+    } catch(err) {
         res.status(500).send({
-            success:false,
-            Alert:err.toString()
-        })
+            success: false,
+            Alert: err.toString()
+        });
     }
 }
 

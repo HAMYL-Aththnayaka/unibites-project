@@ -1,5 +1,5 @@
 import React ,{useEffect,useState} from 'react'
-import './List.css'
+import './ListHelping.css'
 import api from '../../lib/axios'
 import {toast} from 'react-toastify'
 
@@ -9,7 +9,7 @@ const List = () => {
   const [selectedCanteen, setSelectedCanteen] = useState("Applied-Canteen");
 
   const fetchList = async()=>{
-    const response = await api.get('/foods/list')
+    const response = await api.get('/HelpingHand/foods/list')
     
     if (response.data.success){
       setList(response.data.Data || [])
@@ -25,7 +25,7 @@ const List = () => {
   
   const removeFood = async (foodId) => {
     try {
-      const response = await api.delete('/foods/remove', { data: { id: foodId } });
+      const response = await api.delete('/HelpingHand/foods/remove', { data: { id: foodId } });
       if (response.data.success) {
         setList(prevList => prevList.filter(item => item._id !== foodId));
         toast.success("Item Removed!!");

@@ -23,6 +23,21 @@ const Sidebar = () => {
           <p>Orders</p>
         </NavLink>
 
+        <NavLink to='/contact' className="sidebar-option">
+          <img className='imgg' src={assets.service} alt="" />
+          <p>contactAdmin </p>
+        </NavLink>
+
+        <NavLink to='/help' className="sidebar-option">
+          <img className='imgg' src={assets.service} alt="" />
+          <p>AddToHelpingHand </p>
+        </NavLink>
+
+        <NavLink to='/listhelp' className="sidebar-option">
+          <img className='imgg' src={assets.service} alt="" />
+          <p>ListHelpingHand </p>
+        </NavLink>
+
       </div>
     </div>
   )
