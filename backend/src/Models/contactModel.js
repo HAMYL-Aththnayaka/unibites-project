@@ -13,7 +13,7 @@ const ConatactSchema = new mongoose.Schema({
         required:true
     },
     faculty:{
-        type:Number,
+        type:String,
         required:true
     },
     reason:{
@@ -25,7 +25,7 @@ const ConatactSchema = new mongoose.Schema({
         required:true
     },
     scholership:{
-        type:String,
+        type:[String],
         required:true
     }
 })

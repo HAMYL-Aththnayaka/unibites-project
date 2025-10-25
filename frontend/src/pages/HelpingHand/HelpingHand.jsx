@@ -1,55 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import FoodItem from '../../components/FoodItem/FoodItem';
-import api from '../../lib/axios';
-import { useNavigate } from 'react-router-dom';
+import { StoreContext } from '../../context/StoreContext';
 import './HelpingHand.css';
+import { useNavigate } from 'react-router-dom';
 
 const HelpingHandDisplay = ({ category = 'All' }) => {
-  const [helpingFoods, setHelpingFoods] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { helping_food_list =[] } = useContext(StoreContext); // ✅ get Helping Hand foods from context
   const navigate = useNavigate();
+  console.log(helping_food_list)
 
-  // Fetch foods from Helping Hand endpoint
-  const fetchHelpingFoods = async () => {
-    try {
-      const response = await api.get('/api/HelpingHand/foods/list');
-      if (response.data.success) {
-        setHelpingFoods(response.data.Data || []);
-      } else {
-        console.warn('Unexpected response format:', response.data);
-      }
-    } catch (error) {
-      console.error('Failed to fetch helping hand foods:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchHelpingFoods();
-  }, []);
-
-  // Filter foods by category if not 'All'
-  const filteredFoods = helpingFoods.filter(
-    (item) =>
-      category.toLowerCase() === 'all' ||
-      item.category?.toLowerCase() === category.toLowerCase()
+  // Filter foods by category
+  const filteredFoods = helping_food_list.filter(
+    (item) => category === "All" || item.category === category
   );
 
   const renderAdminContact = () => (
-    <div className={loading ? 'Question' : filteredFoods.length ? 'Question' : 'Question1'}>
-      <p>{loading ? 'Loading charity foods...' : filteredFoods.length ? '' : 'No charity foods available right now.'}</p>
+    <div className={filteredFoods.length ? 'Question' : 'Question1'}>
+      <p>{filteredFoods.length ? '' : 'No charity foods available right now.'}</p>
       <h3>Contact Admin For Support</h3>
       <button onClick={() => navigate('/contactadmin')}>Contact</button>
     </div>
   );
 
-  if (loading || !filteredFoods.length) return renderAdminContact();
+  if (!filteredFoods.length) return renderAdminContact();
 
   return (
     <div>
       {renderAdminContact()}
-
       <div className="food-display1" id="helping-hand-display">
         <h2>Helping Hand - Foods Paid by Others</h2>
         <div className="food-display-list1">
@@ -59,8 +36,9 @@ const HelpingHandDisplay = ({ category = 'All' }) => {
               id={item._id}
               name={item.name}
               description={item.description}
-              price={item.price}
+              price={0} // Always free
               image={item.image}
+              isHelpingHand={true} // mark as free
             />
           ))}
         </div>

@@ -26,7 +26,7 @@ const Add = () => {
     const formData = new FormData();
     formData.append('name',data.name);
     formData.append('description',data.description);
-    formData.append('price',Number(data.price));
+    formData.append('price',Number(data.price=0));
     formData.append('catagory',data.catagory);
     formData.append('canteen',data.canteen);
     formData.append('image',image);

@@ -28,7 +28,28 @@
   transform: translateY(-3px);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
 }
+.contact-header {
+  position: relative; /* Needed for absolute positioning inside */
+  margin: 0;
+  padding: 0;
+}
 
+.addlist {
+  cursor: pointer;
+  color: rgb(82, 155, 82);
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.close {
+  cursor: pointer;
+  color: tomato;
+  font-size: 30px;
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 
 .Container p {
   margin: 6px 0;
@@ -50,7 +71,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
-/* Responsive adjustments */
 @media (max-width: 600px) {
   .Container > div {
     width: 100%;

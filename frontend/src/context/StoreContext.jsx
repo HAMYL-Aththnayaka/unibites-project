@@ -7,22 +7,23 @@ const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
     const [token, setToken] = useState('');
     const [food_list, setFood_list] = useState([]); 
+    const [helping_food_list, setHelping_food_list] = useState([]); 
 
-    const addToCart = async(itemId) => {
-        if (!cartItems[itemId]) {
-            setCartItems(prev => ({ ...prev, [itemId]: 1 }));
-        } else {
-            setCartItems(prev => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-        }
-        if(token){
-         await api.post(
-    '/api/cart/add',
-    { itemId }, 
-    { headers: { Authorization: `Bearer ${token}` } } 
-);
+ const addToCart = async(itemId, isHelpingHand = false) => {
+    if (!cartItems[itemId]) {
+        setCartItems(prev => ({ ...prev, [itemId]: 1 }));
+    } else {
+        setCartItems(prev => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+    }
 
-        }
-    };
+    if(token){
+        await api.post(
+            '/api/cart/add',
+            { itemId, isHelpingHand }, // send the flag
+            { headers: { Authorization: `Bearer ${token}` } } 
+        );
+    }
+};
 
     const removeFromCart = async(itemId) => {
         setCartItems(prev => ({ ...prev, [itemId]: prev[itemId] - 1 }));
@@ -35,20 +36,40 @@ const StoreContextProvider = (props) => {
     };
 
     const getaTotalCartAmmount = () => {
-        let totalAmmount = 0;
-        for (const item in cartItems) {
-            if (cartItems[item] > 0) {
-                let itemInfo = food_list.find(product => product._id === item);
-                if(itemInfo) totalAmmount += itemInfo.price * cartItems[item];
+    let totalAmmount = 0;
+    for (const item in cartItems) {
+        if (cartItems[item] > 0) {
+            // Look in normal foods first, then Helping Hand foods
+            let itemInfo = food_list.find(product => product._id === item)
+                        || helping_food_list.find(product => product._id === item);
+
+            if(itemInfo) {
+                // For Helping Hand foods, price is always 0
+                const price = itemInfo.isHelpingHand ? 0 : itemInfo.price;
+                totalAmmount += price * cartItems[item];
             }
         }
-        return totalAmmount;
+    }
+    return totalAmmount;
+};
+
+
+const fetchFoodList = async () => {
+        try {
+            const [normalRes, helpingRes] = await Promise.all([
+                api.get('/api/foods/list'),
+                api.get('/api/HelpingHand/foods/list'),
+            ]);
+
+            setFood_list(normalRes.data?.Data || []);
+            setHelping_food_list(helpingRes.data?.Data || []);
+        } catch (error) {
+            console.error("Error fetching foods:", error);
+        }
     };
 
-    const fetchFoodList = async () => {
-        const response = await api.get('/api/foods/list');
-        setFood_list(response.data.Data);
-    };
+
+
 
     const loadCartData=async(token)=>{
         const response=await api.post('api/cart/get',
@@ -71,6 +92,7 @@ const StoreContextProvider = (props) => {
 
     const contextValue = {
         food_list,
+        helping_food_list,
         cartItems,
         setCartItems,
         addToCart,

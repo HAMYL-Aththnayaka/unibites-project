@@ -42,7 +42,7 @@ const LogginPopup = ({ setShowLogin }) => {
         localStorage.setItem('token', response.data.token);
         setShowLogin(false);
       } else {
-        alert(response.data.alert);
+        window.alert(response.data.alert);
       }
     } catch (error) {
       toast.error(error.response?.data?.alert || 'Server error');
@@ -91,7 +91,7 @@ const LogginPopup = ({ setShowLogin }) => {
             onChange={onChangeHandler}
             value={data.password}
             type="password"
-            placeholder="Password"
+            placeholder="Password 8 characters long"
             required
           />
 

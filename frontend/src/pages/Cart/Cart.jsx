@@ -2,10 +2,12 @@ import React, { useContext } from 'react'
 import './Cart.css'
 import { StoreContext } from '../../context/StoreContext'
 import { useNavigate } from 'react-router-dom'
+import api from '../../lib/axios.js'
 
 const Cart = () => {
-  const { cartItems, food_list, removeFromCart ,getaTotalCartAmmount } = useContext(StoreContext)
+  const { cartItems, food_list,helping_food_list, removeFromCart ,getaTotalCartAmmount } = useContext(StoreContext)
   const navigate = useNavigate();
+  const allItems = [...food_list,...helping_food_list];
   return (
     <div className='cart'>
       <div className="cart-items">
@@ -19,13 +21,13 @@ const Cart = () => {
         </div>
         <br />
         <hr />
-        {food_list.map((item, index) => {
+        {allItems.map((item, index) => {
           if (cartItems[item._id] > 0) {
             return (
               <div className="">
 
               <div className='cart-items-title cart-items-item' key={item._id}>
-                  <img src={item.image} alt="" />
+                <img src={`http://localhost:3000/images/${item.image}`} alt={item.name} />
                   <p>{item.name}</p>
                   <p>LKR {item.price}0. 00</p>
                   <p>{cartItems[item._id]}</p>

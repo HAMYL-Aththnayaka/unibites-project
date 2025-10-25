@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './ContactAdmin.css';
+import { toast } from 'react-toastify'
 import api from '../../lib/axios.js'
 
 
@@ -18,13 +19,13 @@ const ContactAdmin = () => {
 
     if (name === 'scholarships') {
       if (checked) {
-       
+
         setFormData((prev) => ({
           ...prev,
           scholarships: [...prev.scholarships, value],
         }));
       } else {
-       
+
         setFormData((prev) => ({
           ...prev,
           scholarships: prev.scholarships.filter((item) => item !== value),
@@ -35,11 +36,40 @@ const ContactAdmin = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Your request has been sent to the admin!');
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+ const payload = {
+  name: formData.name,
+  registration: formData.registrationNo,
+  faculty: formData.faculty,
+  reason: formData.reason,
+  recomendation: formData.recommendation, // matches backend
+  scholership: formData.scholarships, // matches backend
+};
+
+  try {
+    const response = await api.post('/api/contact/addto', payload);
+
+    if (response.data.success) {
+      setFormData({
+        name: '',
+        registrationNo: '',
+        faculty: '',
+        reason: '',
+        recommendation: '',
+        scholarships: [],
+      });
+      toast.success("Your request was sent to the admin");
+    } else {
+      toast.error("Your request was not sent");
+    }
+  } catch (error) {
+    toast.error("An error occurred while sending your request");
+    console.error(error);
+  }
+};
+
 
   return (
     <div className="contact-admin-container">
@@ -53,6 +83,7 @@ const ContactAdmin = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
+              placeholder='Name should be as your username'
               required
             />
           </label>

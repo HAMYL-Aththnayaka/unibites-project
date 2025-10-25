@@ -53,23 +53,23 @@ const createToken =(id)=>{
 export const registerUser = async (req, res) => {
   try {
     const { name, password, email, role } = req.body;
-    console.log("Request body:", req.body);
-
-
+    
+    
     if (!name || !email || !password || !role) {
-      return res.status(403).send({ success: false, 
+      return res.status(400).send({ success: false, 
         alert: "All fields are required" 
       });
     }
-
+    
     if (!validator.isEmail(email)) {
-      return res.status(403).send({ success: 
-        false, alert: "Please enter a valid email" 
+      return res.status(400).send({ success: 
+        false,
+         alert: "Please enter a valid email" 
       });
     }
 
     if (password.length < 8 || !password.match(/[!@#$%^&*]/)) {
-      return res.status(403).send({ success: false,
+      return res.status(400).send({ success: false,
          alert: "Password must be at least 8 chars + special character"
          });
     }
