@@ -43,6 +43,7 @@ const LogginPopup = ({ setShowLogin }) => {
         setShowLogin(false);
       } else {
         window.alert(response.data.alert);
+        console.log(response.data.alert)
       }
     } catch (error) {
       toast.error(error.response?.data?.alert || 'Server error');

@@ -19,7 +19,7 @@ const StoreContextProvider = (props) => {
         if (token) {
             await api.post(
                 '/api/cart/add',
-                { itemId, isHelpingHand }, // send the flag
+                { itemId, isHelpingHand },// true false yawanaw
                 { headers: { Authorization: `Bearer ${token}` } }
             );
         }
@@ -81,7 +81,7 @@ const StoreContextProvider = (props) => {
 
     useEffect(() => {
         async function loadData() {
-            const storedToken = localStorage.getItem('token');
+            const storedToken = localStorage.getItem('token');//token eka gannawa REGISTER weddi hadena 
             if (storedToken) {
                 setToken(storedToken);
                 await loadCartData(storedToken);
