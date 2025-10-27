@@ -28,7 +28,7 @@ export const loginUser = async(req,res)=>{
                 alert:"Password Incorect"
             })
         }
-        const token = createToken(user._id)
+        const token = createToken(user)
         if(token){
             return res.status(200).send({
                 success:true,
@@ -45,8 +45,8 @@ export const loginUser = async(req,res)=>{
 }
 
 
-const createToken =(id)=>{
-    return jwt.sign(({id}),process.env.JWT_SECRET_KEY)
+const createToken =(user)=>{
+    return jwt.sign(({id:user._id,name:user.name}),process.env.JWT_SECRET_KEY)
 }
 
 ///registerUSer
@@ -92,9 +92,11 @@ export const registerUser = async (req, res) => {
       });
     const user = await newUser.save();
 
-    const token = jwt.sign({
-       id: user._id
-       }, process.env.JWT_SECRET_KEY);
+   const token = jwt.sign(
+  { id: user._id, name: user.name }, 
+  process.env.JWT_SECRET_KEY
+);
+
 
     res.status(200).send({ 
       success: true,

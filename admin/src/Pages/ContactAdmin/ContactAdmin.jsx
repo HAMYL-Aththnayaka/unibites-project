@@ -17,23 +17,40 @@ const ContactAdmin = () => {
     }
   }
 
-const addHandle = async(name)=>{
-    
-}
-const deletehandle = async (id) => {
-  try {
-    const response = await api.post(`/contact/remove/${id}`);
-    if (response.data.success) {
-      setContacts((prev) => prev.filter((contact) => contact._id !== id));
-      toast.success("Contact deleted successfully");
-    } else {
-      toast.error("Failed to delete contact");
+  const addHandle = async (name, registration,id) => {
+    try {
+      const payload = {
+        name,
+        registration
+      };
+
+      const respose = await api.post('/contact/addHelp', payload)
+
+      if (respose.data.success) {
+        toast.success("Student Adedd")
+        deletehandle(id)
+      } else {
+        toast.error(`Student Was Not Added`)
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while Adding Student");
     }
-  } catch (error) {
-    console.error(error);
-    toast.error("An error occurred while deleting contact");
   }
-};
+  const deletehandle = async (id) => {
+    try {
+      const response = await api.post(`/contact/remove/${id}`);
+      if (response.data.success) {
+        setContacts((prev) => prev.filter((contact) => contact._id !== id));
+        toast.success("Contact deleted successfully");
+      } else {
+        toast.error("Failed to delete contact");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while deleting contact");
+    }
+  };
 
 
   useEffect(() => {
@@ -43,8 +60,8 @@ const deletehandle = async (id) => {
   return (
     <div className='Container'>
       {contacts.length === 0 ? (
-      <p className="no-requests">No requests yet </p>
-        
+        <p className="no-requests">No requests yet </p>
+
       ) : (
         contacts.map((contact, index) => (
           <div key={index} className="">
@@ -54,7 +71,7 @@ const deletehandle = async (id) => {
             <p>Reason :{contact.reason}</p>
             <p>Recomendation :{contact.recomendation}</p>
             <p>Recomendation :{contact.scholership}</p>
-           <p className="contact-header"> <span className='addlist' onClick={()=>{}}>+</span><span className='close' onClick={() => deletehandle(contact._id)}>X</span></p>
+            <p className="contact-header"> <span className='addlist' onClick={() =>  addHandle(contact.name, contact.registration,contact._id) }>+</span><span className='close' onClick={() => deletehandle(contact._id)}>X</span></p>
 
           </div>
         ))

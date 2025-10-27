@@ -40,9 +40,7 @@
   border-radius: 6px;
 }
 
-/* ✅ RESPONSIVE DESIGN */
 
-/* Medium screens (tablets) */
 @media (max-width: 992px) {
   .order-item {
     grid-template-columns: 1fr 1fr 1fr;
@@ -51,7 +49,7 @@
   }
 }
 
-/* Small screens (phones) */
+
 @media (max-width: 768px) {
   .order-item {
     grid-template-columns: 1fr 1fr;
@@ -65,7 +63,6 @@
   }
 }
 
-/* Extra small screens */
 @media (max-width: 480px) {
   .order-item {
     grid-template-columns: 1fr;

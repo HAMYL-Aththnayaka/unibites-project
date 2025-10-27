@@ -35,12 +35,12 @@ input[type='text'] {
   display: flex;
   align-items: center;
   gap: 5px;
-  cursor: pointer; /* makes clicking easier */
+  cursor: pointer;
 }
 
 .radio-group input[type='radio'] {
   cursor: pointer;
-  accent-color: #007bff; /* modern colored radio buttons */
+  accent-color: #007bff;
 }
 
 

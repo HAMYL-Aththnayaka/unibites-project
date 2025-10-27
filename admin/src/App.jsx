@@ -8,6 +8,7 @@ import AddToHelpingHand from './Pages/AddToHelpingHand/AddToHelpingHand'
 import List from './Pages/List/List'
 import Orders from './Pages/Orders/Orders'
 import ListHelpng from './Pages/ListHelpingHand/ListHelpng'
+import ListHelpuser from './Pages/ListHelpuser/ListHelpuser'
 import { ToastContainer, toast } from 'react-toastify';
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
         <Routes >
           <Route path='/add' element={<Add />}/>
           <Route path='/contact' element={<ContactAdmin />}/>
+          <Route path='/helpUsers' element={<ListHelpuser />}/>
           <Route path='/help' element={<AddToHelpingHand />}/>
           <Route path='/listhelp' element={<ListHelpng />}/>
           <Route path='/list' element={<List />}/>

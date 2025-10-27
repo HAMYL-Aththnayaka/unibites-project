@@ -5,12 +5,12 @@ import ExplorerMenu from '../../components/ExploreMenu/ExplorerMenu.jsx'
 import FoodDisplay from '../../components/FoodDisplay/FoodDisplay.jsx'
 import AppDownlaod from '../../components/appDownload/AppDownload.jsx'
 const Home = () => {
-  const [ catagary , setCatagary] = useState("All");
+  const [ catagory , setCatagory] = useState("All");
   return (
     <div>   
         <Header />
-        <ExplorerMenu catagary={catagary} setCatagary={setCatagary}/>
-         <FoodDisplay catagory={catagary} />
+       <ExplorerMenu catagory={catagory} setCatagory={setCatagory} />
+      <FoodDisplay catagory={catagory} />
          <AppDownlaod />  
      </div>
   )

@@ -5,7 +5,7 @@ import './HelpingHand.css';
 import { useNavigate } from 'react-router-dom';
 
 const HelpingHandDisplay = ({ category = 'All' }) => {
-  const { helping_food_list =[] } = useContext(StoreContext); // ✅ get Helping Hand foods from context
+  const { helping_food_list =[] } = useContext(StoreContext);
   const navigate = useNavigate();
   console.log(helping_food_list)
 

@@ -18,6 +18,11 @@ const Sidebar = () => {
           <p>List Items</p>
         </NavLink>
         
+        <NavLink to='/help' className="sidebar-option">
+          <img className='imgg' src={assets.service} alt="" />
+          <p>AddToHelpingHand </p>
+        </NavLink>
+        
         <NavLink to='/Orders' className="sidebar-option">
           <img src={assets.order_icon} alt="" />
           <p>Orders</p>
@@ -28,14 +33,15 @@ const Sidebar = () => {
           <p>contactAdmin </p>
         </NavLink>
 
-        <NavLink to='/help' className="sidebar-option">
-          <img className='imgg' src={assets.service} alt="" />
-          <p>AddToHelpingHand </p>
-        </NavLink>
 
         <NavLink to='/listhelp' className="sidebar-option">
           <img className='imgg' src={assets.service} alt="" />
           <p>ListHelpingHand </p>
+        </NavLink>
+
+        <NavLink to='/helpUsers' className="sidebar-option">
+          <img className='imgg' src={assets.service} alt="" />
+          <p>List HH users </p>
         </NavLink>
 
       </div>

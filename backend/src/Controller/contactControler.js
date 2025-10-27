@@ -1,4 +1,5 @@
 import contactModel from '../Models/contactModel.js';
+import helpingUser from '../Models/helpingUsers.js'
 
 export const addTo = async (req, res) => {
   try {
@@ -71,6 +72,35 @@ export const viewRemove = async (req, res) => {
     res.status(500).send({
       success: false,
       alert: err.toString(),
+    });
+  }
+};
+ export const AddToHelp = async (req, res) => {
+  try {
+    const { name, registration } = req.body;
+
+    if (!name || !registration) {
+      return res.status(400).send({
+        success: false,
+        alert: 'Missing required fields: name or registration',
+      });
+    }
+    const payload = new helpingUser({
+      name,
+      registration,
+    });
+
+    await payload.save();
+
+    res.status(200).send({
+      success: true,
+      alert: 'New student added to help list',
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      success: false,
+      alert: 'Server error: ' + err.message,
     });
   }
 };

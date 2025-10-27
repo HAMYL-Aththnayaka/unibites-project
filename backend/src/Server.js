@@ -9,7 +9,7 @@ import helpingHand from './Routes/helpingHandRoute.js'
 import cartRouter from './Routes/cartRoute.js'
 import orderROuter from './Routes/orderRoute.js';
 import contactRoute from './Routes/contactRoute.js'
-
+import helpUsersRouter from './Routes/helpUsersRouter.js'
 
 //app config
 const app = express();
@@ -32,6 +32,7 @@ connectDB().then(()=>{
     app.use('/api/cart',cartRouter)
     app.use('/api/order',orderROuter)
     app.use('/api/contact',contactRoute)
+    app.use('/api/helpuser',helpUsersRouter)
     
     //making sure only after database is connected ,
     //the serverr starts to run
