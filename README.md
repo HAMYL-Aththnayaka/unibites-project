@@ -38,6 +38,9 @@ Lets Leap in to the future
 - Real-time order tracking
 
 - User ratings and feedback for menu items
+# Sample Output :
+<img width="1900" height="1008" alt="Project" src="https://github.com/user-attachments/assets/e01ea097-2a58-4b79-9449-2bd8beb4c449" />
+
 
 # Connect with Me
 https://github.com/HAMYL-Aththnayaka
