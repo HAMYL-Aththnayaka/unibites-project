@@ -33,9 +33,8 @@ const FoodItem = ({ id, name, price, description, image, canteen,catagary, isHel
           <p>{name}</p>
           <img src={assets.rating_starts} alt="" />
         </div>
-        <p className="food-item-desc">{description}
-          <> {canteen}</>
-        </p>
+        <p className="food-item-desc">{description}</p>
+        <p> {canteen}</p>
         <p className="food-item-price">
           {isHelpingHand ? "Free" : `LKR ${price}.00`}
           

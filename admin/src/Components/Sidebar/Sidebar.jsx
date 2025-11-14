@@ -29,18 +29,18 @@ const Sidebar = () => {
         </NavLink>
 
         <NavLink to='/contact' className="sidebar-option">
-          <img className='imgg' src={assets.service} alt="" />
+          <img className='imgg' src={assets.admin} alt="" />
           <p>contactAdmin </p>
         </NavLink>
 
 
         <NavLink to='/listhelp' className="sidebar-option">
-          <img className='imgg' src={assets.service} alt="" />
+          <img className='imgg' src={assets.HHFood} alt="" />
           <p>ListHelpingHand </p>
         </NavLink>
 
         <NavLink to='/helpUsers' className="sidebar-option">
-          <img className='imgg' src={assets.service} alt="" />
+          <img className='imgg' src={assets.HHUser} alt="" />
           <p>List HH users </p>
         </NavLink>
 
