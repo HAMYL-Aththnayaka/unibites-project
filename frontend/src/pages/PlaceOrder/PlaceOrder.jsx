@@ -20,21 +20,30 @@ const PlaceOrder = () => {
   });
 
   const navigate = useNavigate();
+  const subtotal = getaTotalCartAmmount();
+  const deliveryFee = orderType === 'delivery' ? 200 : 0;
+  const total = subtotal + deliveryFee;
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const deliveryFee = orderType === 'delivery' && paymentMethod === 'online' ? 200 : 0;
-  const subtotal = getaTotalCartAmmount();
-  const total = subtotal + deliveryFee;
-
   const placeOrder = async (e) => {
     e.preventDefault();
 
+    if (!token) {
+      alert("Please login first.");
+      navigate('/login');
+      return;
+    }
+
+    if (subtotal === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+
     try {
-      // Prepare items array for backend
       const items = food_list
         .filter(item => cartItems[item._id] > 0)
         .map(item => ({
@@ -44,26 +53,22 @@ const PlaceOrder = () => {
         }));
 
       const orderData = {
-        userId: token,
-        items: items,
+        userId: token,      
+        items,
         amount: total,
         address: data,
         paymentMethod,
-        orderType
+        orderType,
+        payment: true // auto-mark as paid
       };
 
-      // Send order to backend
-      const res = await api.post('/api/order/create-paypal-order', orderData, {
+      const res = await api.post('/api/order/create-order', orderData, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
       if (res.data.success) {
-        if (paymentMethod === 'online') {
-          // Redirect user to PayPal checkout
-          window.location.href = res.data.approvalUrl;
-        } else {
-          alert("Order placed! Pay at the counter.");
-        }
+        alert(res.data.message);
+        navigate('/myorders');
       } else {
         alert("Something went wrong while placing order.");
       }
@@ -74,10 +79,10 @@ const PlaceOrder = () => {
   };
 
   useEffect(() => {
-    if (!token || getaTotalCartAmmount() === 0) {
+    if (!token || subtotal === 0) {
       navigate('/cart');
     }
-  }, [token, navigate, getaTotalCartAmmount]);
+  }, [token, subtotal, navigate]);
 
   return (
     <form className='place-order' onSubmit={placeOrder}>
@@ -111,91 +116,27 @@ const PlaceOrder = () => {
         {orderType === 'delivery' && (
           <>
             <div className="multi-fields">
-              <input
-                name='firstName'
-                value={data.firstName}
-                onChange={onChangeHandler}
-                type="text"
-                placeholder='First Name'
-                required
-              />
-              <input
-                name='lastName'
-                value={data.lastName}
-                onChange={onChangeHandler}
-                type="text"
-                placeholder='Last Name'
-                required
-              />
+              <input name='firstName' value={data.firstName} onChange={onChangeHandler} placeholder='First Name' required />
+              <input name='lastName' value={data.lastName} onChange={onChangeHandler} placeholder='Last Name' required />
             </div>
-
-            <input
-              name='email'
-              value={data.email}
-              onChange={onChangeHandler}
-              type="email"
-              placeholder='Email Address'
-              required
-            />
-            <input
-              name='nearest_town'
-              value={data.nearest_town}
-              onChange={onChangeHandler}
-              type="text"
-              placeholder='Nearest Town'
-              required
-            />
-
+            <input name='email' value={data.email} onChange={onChangeHandler} type="email" placeholder='Email Address' required />
+            <input name='nearest_town' value={data.nearest_town} onChange={onChangeHandler} placeholder='Nearest Town' required />
             <div className="multi-fields">
-              <input
-                name='street'
-                value={data.street}
-                onChange={onChangeHandler}
-                type="text"
-                placeholder='Street'
-                required
-              />
-              <input
-                name='address'
-                value={data.address}
-                onChange={onChangeHandler}
-                type="text"
-                placeholder='Address'
-                required
-              />
+              <input name='street' value={data.street} onChange={onChangeHandler} placeholder='Street' required />
+              <input name='address' value={data.address} onChange={onChangeHandler} placeholder='Address' required />
             </div>
-
-            <input
-              name='phone_number'
-              value={data.phone_number}
-              onChange={onChangeHandler}
-              type="text"
-              placeholder='Phone Number'
-              required
-            />
+            <input name='phone_number' value={data.phone_number} onChange={onChangeHandler} placeholder='Phone Number' required />
           </>
         )}
 
         <div className="payment-method">
           <p>Select Payment Method:</p>
           <label>
-            <input
-              type="radio"
-              name="payment"
-              value="online"
-              checked={paymentMethod === 'online'}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            />
-            Pay Online (PayPal)
+            <input type="radio" name="payment" value="online" checked={paymentMethod === 'online'} onChange={(e) => setPaymentMethod(e.target.value)} />
+            Pay Online
           </label>
           <label>
-            <input
-              type="radio"
-              name="payment"
-              value="counter"
-              checked={paymentMethod === 'counter'}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            />
+            <input type="radio" name="payment" value="counter" checked={paymentMethod === 'counter'} onChange={(e) => setPaymentMethod(e.target.value)} />
             Pay at Counter
           </label>
         </div>
@@ -205,7 +146,7 @@ const PlaceOrder = () => {
         <div className="cart-total">
           <h2>Cart Total</h2>
           <div className="cart-total-summary">
-            {orderType === 'delivery' && paymentMethod === 'online' && (
+            {orderType === 'delivery' && (
               <div className="cart-total-details">
                 <p>Delivery fee</p>
                 <p>LKR {deliveryFee}.00</p>
@@ -217,7 +158,7 @@ const PlaceOrder = () => {
               <b>LKR {total}.00</b>
             </div>
           </div>
-          <button type="submit">Proceed to Payment</button>
+          <button type="submit">Place Order</button>
         </div>
       </div>
     </form>

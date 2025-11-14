@@ -3,8 +3,7 @@ import './LogginPopup.css';
 import { assets } from '../../assets/assets';
 import api from '../../lib/axios';
 import { StoreContext } from '../../context/StoreContext';
-import {toast} from 'react-toastify'
-
+import { toast } from 'react-toastify';
 
 const LogginPopup = ({ setShowLogin }) => {
   const { setToken } = useContext(StoreContext);
@@ -14,7 +13,7 @@ const LogginPopup = ({ setShowLogin }) => {
     name: '',
     email: '',
     password: '',
-    role: ''
+    role: '',
   });
 
   const onChangeHandler = (event) => {
@@ -33,7 +32,12 @@ const LogginPopup = ({ setShowLogin }) => {
       const payload =
         curentState === 'Login'
           ? { email: data.email, password: data.password }
-          : { name: data.name, email: data.email, password: data.password, role: data.role };
+          : {
+              name: data.name,
+              email: data.email,
+              password: data.password,
+              role: data.role,
+            };
 
       const response = await api.post(newUrl, payload);
 
@@ -41,12 +45,18 @@ const LogginPopup = ({ setShowLogin }) => {
         setToken(response.data.token);
         localStorage.setItem('token', response.data.token);
         setShowLogin(false);
+        
+        const successMessage = curentState === 'Login' ? 'Logged in successfully!' : 'Account created!';
+        toast.success(successMessage); 
+
       } else {
-        window.alert(response.data.alert);
-        console.log(response.data.alert)
+        toast.error(response.data.alert); 
+        console.log(response.data.alert);
       }
     } catch (error) {
-      toast.error(error.response?.data?.alert || 'Server error');
+    
+      const errorMessage = error.response?.data?.alert || 'Server error, please try again.';
+      toast.error(errorMessage);
     }
   };
 
@@ -54,6 +64,7 @@ const LogginPopup = ({ setShowLogin }) => {
     <div className="login-popup">
       <form onSubmit={onLogin} className="login-popup-container">
         <div className="login-popup-title">
+          
           <h2>{curentState}</h2>
           <img
             onClick={() => setShowLogin(false)}

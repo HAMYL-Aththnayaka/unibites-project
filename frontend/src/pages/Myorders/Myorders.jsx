@@ -11,13 +11,13 @@ const Myorders = () => {
   const fetchOrder = async () => {
     try {
       const response = await api.post(
-        'api/order/userorder',
+        '/api/order/userorders',
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setData(response.data.data || []); // Ensure data exists
+      setData(response.data.data || []); 
     } catch (err) {
       console.error('Error fetching orders:', err);
     }

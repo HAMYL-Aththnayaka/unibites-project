@@ -1,140 +1,83 @@
-import pkg from '@paypal/checkout-server-sdk';
-const paypal = pkg;
-const { payments } = pkg;
+import orderModel from '../Models/orderModel.js';
 
-import orderModel from '../Models/orderModel.js'
-
-// Setup PayPal client (Sandbox for testing)
-const environment = new paypal.core.SandboxEnvironment(
-  process.env.PAYPAL_CLIENT_ID,
-  process.env.PAYPAL_SECRET
-);
-const client = new paypal.core.PayPalHttpClient(environment);
-
-// Step 1: Create a PayPal order (checkout link)
-export const createPayPalOrder = async (req, res) => {
+// Create Order 
+export const createOrder = async (req, res) => {
   try {
-    const request = new paypal.orders.OrdersCreateRequest();
-    request.requestBody({
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "USD",          
-            value: req.body.amount,       
-          }
-        }
-      ],
-      application_context: {
-        return_url: "http://localhost:5173/verify?success=true",
-        cancel_url: "http://localhost:5173/verify?success=false"
-      }
+    const { userId, items, amount, address, paymentMethod, orderType } = req.body;
+
+    const order = await orderModel.create({
+      userId,
+      items,
+      amount,
+      address,
+      paymentMethod,
+      orderType,
+      payment: paymentMethod === 'online' ? true : false,
+      status: 'Pending'
     });
 
-    const order = await client.execute(request);
-    // Find the PayPal checkout link
-    const approvalUrl = order.result.links.find(link => link.rel === "approve").href;
-
-    res.json({
-         success: true, 
-         url: approvalUrl });
-
+    res.status(201).json({
+      success: true,
+      message: paymentMethod === 'online' ? 'Order placed and paid successfully' : 'Order placed, pay at counter',
+      orderId: order._id
+    });
   } catch (err) {
-    res.status(500).json({
-        success: false, 
-        error: err.message
-     });
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 };
 
-// Step 2: Capture payment after user approves
-export const capturePayPalOrder = async (req, res) => {
+// Verify Order 
+export const verifyOrder = async (req, res) => {
+  const { orderId } = req.body;
   try {
-    const orderId = req.body.orderId; // sent from frontend after redirect
-    const request = new paypal.orders.OrdersCaptureRequest(orderId);
-    request.requestBody({});
+    const order = await orderModel.findById(orderId);
+    if (!order) return res.status(404).json({ success: false, message: "Order not found" });
 
-    const capture = await client.execute(request);
-    res.json({
-         success: true,
-        details: capture.result
-     });
-
+    res.json({ success: true, payment: order.payment, status: order.status });
   } catch (err) {
-    res.status(500).json({
-        success: false, 
-        error: err.message });
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 };
-export const  veruifyOrder = async(erq,res)=>{
-  const {orderId ,success} = req.body;
-  try{
-      if (success =="true"){
-        await orderModel.findByIdAndUpdate(orderId,{payment:true});
-        res.json({success:true,
-          message:"Paid"
-        })
-      }else{
-        await orderModel.findByIdAndDelete(orderId);
-                res.json({
-          success:false,
-          message:"Not Paid"
-        })
-      }
-  }catch(err){
 
+// Get user orders
+export const userOrders = async (req, res) => {
+  try {
+    const orders = await orderModel.find({ userId: req.body.userId });
+    res.status(200).json({ success: true, data: orders });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, alert: err.message });
   }
-  
-}
-export const userOrder = async(req,res)=>{
-    try{
-      const orders = await orderMOdel.find({userId :req.nody.userId})
-      res.status(200).send({
-        success:true,
-        data:orders
-      })
-    }catch(err){
-      res.status(500).send({
-        success:false,
-        alert:'error'
-      })
-    }
-}
+};
 
+// List all orders (admin)
+export const listOrders = async (req, res) => {
+  try {
+    const orders = await orderModel.find({});
+    res.status(200).json({ success: true, data: orders });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, alert: err.message });
+  }
+};
 
-//userOrders fro front End
+// Update order status (delete)
+export const updateStatus = async (req, res) => {
+  try {
+    const { orderId, status } = req.body;
 
-//listing orders fr admin pannel
-
-export const listOrders = async(req,res)=>{
-    try{
-        const orders = await orderModel.find({})
-        res.status(200).send({
-          success:true,
-          data:orders
-        })
-    }catch(err){
-      console.log(err);
-      res.status(500).send({
-        alert:err.toString()
-      })
-    }
-}
-//api updaing order status
-
-export const updateStatus= async(req,res)=>{
-    try{
+    if (status === "Delivered") {
       
-      await orderModel.findByIdAndUpdate(req.body.orderId,{status:req.body.status})
-      res.status(200).send({
-        success:true,
-        alert:"status Updated"
-      })
-    }catch(err){
-      console.log(err.toString()) 
-      res.status(500).send({
-          success:false,
-          alert:err.toString()
-        })
+      await orderModel.findByIdAndDelete(orderId);
+      return res.status(200).json({ success: true, alert: "Order delivered and deleted" });
     }
-}
+
+    await orderModel.findByIdAndUpdate(orderId, { status });
+    res.status(200).json({ success: true, alert: "Status updated" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, alert: err.message });
+  }
+};

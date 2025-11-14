@@ -80,7 +80,6 @@
   padding: 10px;
 }
 
-/* Responsive adjustments */
 @media (max-width: 600px) {
   .Question, .Question1 {
     margin: 15px;
