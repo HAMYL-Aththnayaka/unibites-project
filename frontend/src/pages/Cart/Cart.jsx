@@ -29,9 +29,9 @@ const Cart = () => {
               <div className='cart-items-title cart-items-item' key={item._id}>
                 <img src={`http://localhost:3000/images/${item.image}`} alt={item.name} />
                   <p>{item.name}</p>
-                  <p>LKR {item.price}0. 00</p>
+                  <p>LKR {item.price}. 00</p>
                   <p>{cartItems[item._id]}</p>
-                  <p>LKR {item.price*cartItems[item._id]}0 .00</p>
+                  <p>LKR {item.price*cartItems[item._id]} .00</p>
                   <p onClick={()=>{
                     removeFromCart(item._id)
                   }}className='cross'>x</p>  
@@ -49,17 +49,17 @@ const Cart = () => {
           <div>
             <div className="cart-total-details">
               <p>Subtotal</p>
-              <p>LKR {getaTotalCartAmmount()}0. 00</p>
+              <p>LKR {getaTotalCartAmmount()}. 00</p>
             </div>
             <hr />
             <div className="cart-total-details">
               <p>Delivary fee</p>
-              <p>LKR {getaTotalCartAmmount()===0 ? 0 : 2}0 .00</p>
+              <p>LKR {getaTotalCartAmmount()===0 ? 0 : 2} .00</p>
             </div>
             <hr />
             <div className="cart-total-details">
               <b>Total </b>
-              <b> LKR {getaTotalCartAmmount()===0?0:getaTotalCartAmmount()+2}0. 00</b>
+              <b> LKR {getaTotalCartAmmount()===0?0:getaTotalCartAmmount()+2}. 00</b>
             </div>  
           </div>
             <button onClick={()=>{
