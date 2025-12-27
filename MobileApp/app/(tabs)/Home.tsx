@@ -25,7 +25,7 @@ import {
 
 const { width } = Dimensions.get('window');
 
-// Interface matching foodModel.js
+// Interface foodModel.js
 interface FoodItem {
   _id: string;
   name: string;
@@ -41,15 +41,15 @@ const Home: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Configuration based on Server.js
+  //  Server.js
   const API_BASE_URL = "http://localhost:3000"; 
 
   useEffect(() => {
     const fetchFoods = async () => {
       try {
-        // Endpoint from foodRoutes.js
+        // Endpoint  foodRoutes.js
         const response = await axios.get(`${API_BASE_URL}/api/foods/list`); 
-        // Logic to handle "Data" key from foodControler.js
+        //  foodControler.js
         if (response.data.success && response.data.Data) { 
           setFoods(response.data.Data); 
         }
@@ -132,7 +132,7 @@ const Home: React.FC = () => {
           ) : (
             filteredFoods.map((item) => (
               <View key={item._id} style={styles.foodCard}>
-                {/* Static path from Server.js */}
+              
                 <Image 
                   source={{ uri: `${API_BASE_URL}/images/${item.image}` }} 
                   style={styles.foodImage} 
@@ -161,13 +161,7 @@ const Home: React.FC = () => {
         </View>
       </ScrollView>
 
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <HomeIcon size={24} color="#ea580c" />
-        <ClipboardList size={24} color="#d1d5db" />
-        <Heart size={24} color="#d1d5db" />
-        <User size={24} color="#d1d5db" />
-      </View>
+     
     </SafeAreaView>
   );
 };
