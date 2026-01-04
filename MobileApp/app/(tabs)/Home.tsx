@@ -1,31 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { 
-  View, 
-  Text, 
-  Image, 
-  ScrollView, 
-  TextInput, 
-  TouchableOpacity, 
-  SafeAreaView, 
-  ActivityIndicator, 
-  StyleSheet, 
-  Dimensions 
+  View, Text, Image, ScrollView, TextInput, TouchableOpacity, 
+  SafeAreaView, ActivityIndicator, StyleSheet, Alert, Platform 
 } from 'react-native';
 import axios from 'axios';
-import { 
-  Search, 
-  ShoppingBag, 
-  Star, 
-  Home as HomeIcon, 
-  ClipboardList, 
-  Heart, 
-  User, 
-  ChevronDown 
-} from 'lucide-react-native';
+import { Search, ShoppingBag, Star, ChevronDown, User } from 'lucide-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const { width } = Dimensions.get('window');
-
-// Interface foodModel.js
 interface FoodItem {
   _id: string;
   name: string;
@@ -38,23 +19,31 @@ interface FoodItem {
 
 const Home: React.FC = () => {
   const [foods, setFoods] = useState<FoodItem[]>([]);
+  const [filteredFoods, setFilteredFoods] = useState<FoodItem[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
 
-  //  Server.js
-  const API_BASE_URL = "http://localhost:3000"; 
+  // UPDATE THIS TO YOUR CURRENT IP ADDRESS
+  const API_BASE_URL = "http://192.168.1.10:3000"; 
 
   useEffect(() => {
     const fetchFoods = async () => {
       try {
-        // Endpoint  foodRoutes.js
-        const response = await axios.get(`${API_BASE_URL}/api/foods/list`); 
-        //  foodControler.js
-        if (response.data.success && response.data.Data) { 
-          setFoods(response.data.Data); 
+        const response = await axios.get(`${API_BASE_URL}/api/foods/list`, {
+          timeout: 5000 // 5 second timeout
+        }); 
+        
+        if (response.data.success && response.data.Data) {
+          setFoods(response.data.Data);
+          setFilteredFoods(response.data.Data);
         }
-      } catch (error) {
-        console.error("Error fetching foods:", error);
+      } catch (error: any) {
+        console.error("Fetch Error:", error.message);
+        Alert.alert(
+          "Connection Error", 
+          "Could not connect to the server. Please check if your backend is running and your IP is correct."
+        );
       } finally {
         setLoading(false);
       }
@@ -62,16 +51,44 @@ const Home: React.FC = () => {
     fetchFoods();
   }, []);
 
+  useEffect(() => {
+    let result = foods;
+    if (activeCategory !== 'All') {
+      result = result.filter(item => item.catagory === activeCategory);
+    }
+    if (searchQuery) {
+      result = result.filter(item => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    setFilteredFoods(result);
+  }, [activeCategory, searchQuery, foods]);
+
+  const handleAddToCart = async (itemId: string) => {
+    try {
+      const token = await AsyncStorage.getItem('token'); 
+      if (!token) {
+        Alert.alert("Login Required", "Please login to add items to your cart.");
+        return;
+      }
+      const response = await axios.post(
+        `${API_BASE_URL}/api/cart/add`, 
+        { itemId }, 
+        { headers: { token } }
+      );
+      if (response.data.success) {
+        Alert.alert("Success", response.data.alert || "Added to Cart");
+      }
+    } catch (error) {
+      Alert.alert("Error", "Could not add item to cart");
+    }
+  };
+
   const categories = ['All', 'Pizza', 'Burgers', 'Salad'];
-  const filteredFoods = activeCategory === 'All' 
-    ? foods 
-    : foods.filter(item => item.catagory === activeCategory);
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        
-        {/* Header */}
         <View style={styles.header}>
           <View>
             <Text style={styles.deliveryLabel}>Delivering to</Text>
@@ -82,34 +99,32 @@ const Home: React.FC = () => {
           </View>
           <View style={styles.profileBadge}>
             <User size={22} color="#f97316" />
-            <View style={styles.notificationDot}><Text style={styles.dotText}>2</Text></View>
           </View>
         </View>
 
-        {/* Search */}
         <View style={styles.section}>
           <Text style={styles.welcomeText}>Good morning, Alex!</Text>
           <View style={styles.searchContainer}>
             <Search size={18} color="#9ca3af" style={styles.searchIcon} />
             <TextInput 
-              placeholder="Search for dishes, restaurants..."
+              placeholder="Search for dishes..."
               style={styles.searchInput}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
             />
           </View>
         </View>
 
-        {/* Promo Card */}
         <View style={styles.section}>
           <View style={styles.promoCard}>
             <View style={styles.promoTextContainer}>
-              <Text style={styles.promoTitle}> Today s Special</Text>
+              <Text style={styles.promoTitle}>Today's Special</Text>
               <Text style={styles.promoSubtitle}>Free drink with any main course!</Text>
             </View>
             <View style={styles.promoCircle} />
           </View>
         </View>
 
-        {/* Categories */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryScroll}>
           {categories.map((cat) => (
             <TouchableOpacity
@@ -124,15 +139,13 @@ const Home: React.FC = () => {
           ))}
         </ScrollView>
 
-        {/* Popular Dishes */}
         <View style={[styles.section, { marginBottom: 120 }]}>
           <Text style={styles.sectionTitle}>Popular Dishes</Text>
           {loading ? (
             <ActivityIndicator color="#f97316" size="large" />
-          ) : (
+          ) : filteredFoods.length > 0 ? (
             filteredFoods.map((item) => (
               <View key={item._id} style={styles.foodCard}>
-              
                 <Image 
                   source={{ uri: `${API_BASE_URL}/images/${item.image}` }} 
                   style={styles.foodImage} 
@@ -150,18 +163,21 @@ const Home: React.FC = () => {
                   </View>
                   <View style={styles.cardFooter}>
                     <Text style={styles.priceText}>${item.price.toFixed(2)}</Text>
-                    <TouchableOpacity style={styles.addButton}>
+                    <TouchableOpacity 
+                      style={styles.addButton}
+                      onPress={() => handleAddToCart(item._id)}
+                    >
                       <ShoppingBag size={20} color="white" />
                     </TouchableOpacity>
                   </View>
                 </View>
               </View>
             ))
+          ) : (
+            <Text style={styles.emptyText}>No dishes found.</Text>
           )}
         </View>
       </ScrollView>
-
-     
     </SafeAreaView>
   );
 };
@@ -173,9 +189,7 @@ const styles = StyleSheet.create({
   deliveryLabel: { color: '#9ca3af', fontSize: 10, fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 1 },
   locationRow: { flexDirection: 'row', alignItems: 'center' },
   locationText: { fontWeight: '900', fontSize: 16, color: '#111827', marginRight: 4 },
-  profileBadge: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#fff7ed', borderWidth: 2, borderColor: '#fff', alignItems: 'center', justifyContent: 'center' },
-  notificationDot: { position: 'absolute', top: -2, right: -2, backgroundColor: '#ea580c', width: 18, height: 18, borderRadius: 9, borderWidth: 2, borderColor: '#fff', alignItems: 'center', justifyContent: 'center' },
-  dotText: { color: 'white', fontSize: 8, fontWeight: 'bold' },
+  profileBadge: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#fff7ed', borderWeight: 2, borderColor: '#fff', alignItems: 'center', justifyContent: 'center' },
   welcomeText: { fontSize: 24, fontWeight: '900', color: '#111827' },
   searchContainer: { marginTop: 16, position: 'relative' },
   searchIcon: { position: 'absolute', left: 16, top: 16, zIndex: 10 },
@@ -191,7 +205,7 @@ const styles = StyleSheet.create({
   categoryBtnText: { fontWeight: 'bold', color: '#9ca3af', fontSize: 14 },
   categoryBtnTextActive: { color: '#fff' },
   sectionTitle: { fontSize: 20, fontWeight: '900', color: '#111827', marginBottom: 24 },
-  foodCard: { backgroundColor: '#fff', borderRadius: 32, marginBottom: 32, overflow: 'hidden', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 10, elevation: 2 },
+  foodCard: { backgroundColor: '#fff', borderRadius: 32, marginBottom: 32, overflow: 'hidden', ...Platform.select({ ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 10 }, android: { elevation: 2 }, web: { cursor: 'pointer' } }) },
   foodImage: { width: '100%', height: 200 },
   cardContent: { padding: 20 },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
@@ -202,7 +216,7 @@ const styles = StyleSheet.create({
   cardFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 },
   priceText: { fontSize: 22, fontWeight: '900', color: '#111827' },
   addButton: { backgroundColor: '#ea580c', padding: 12, borderRadius: 16 },
-  bottomNav: { position: 'absolute', bottom: 24, left: 24, right: 24, backgroundColor: 'rgba(255,255,255,0.95)', height: 80, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', borderRadius: 32, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.1, shadowRadius: 20, elevation: 5 }
+  emptyText: { textAlign: 'center', color: '#9ca3af', marginTop: 20 }
 });
 
 export default Home;
