@@ -1,10 +1,15 @@
+
 import { Stack } from 'expo-router';
+import { StoreContextProvider } from '../context/StoreContext';
 
 export default function RootLayout() {
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      {/* This redirects the initial launch to the tabs group */}
-      <Stack.Screen name="(tabs)" />
-    </Stack>
+    <StoreContextProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" /> 
+        <Stack.Screen name="(tabs)" /> 
+        <Stack.Screen name="cart" />
+      </Stack>
+    </StoreContextProvider>
   );
 }

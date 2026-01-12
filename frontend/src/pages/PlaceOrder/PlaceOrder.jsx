@@ -59,7 +59,7 @@ const PlaceOrder = () => {
         address: data,
         paymentMethod,
         orderType,
-        payment: true // auto-mark as paid
+        payment: true // auto marking to as paid
       };
 
       const res = await api.post('/api/order/create-order', orderData, {

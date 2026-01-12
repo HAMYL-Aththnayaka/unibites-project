@@ -2,29 +2,34 @@ import helpingHandModel from "../Models/helpingHandModel.js";
 import helpuser from '../Models/helpingUsers.js'
 import fs from 'fs'
 
+//add
 export const addFood = async (req, res) => {
     try {
-        let image_filename = `${req.file.filename}`;
+        let image_filename = req.file ? req.file.filename : req.body.image;
+        console.log("Adding HH Food. Body:", req.body);
+        console.log("Resolved Image Filename:", image_filename);
+
+        if (!image_filename) {
+            return res.status(400).send({ 
+                success: false, 
+                message: "Validation Error: Image filename is required" 
+            });
+        }
 
         const food = new helpingHandModel({
             name: req.body.name,
-            description: req.body.description,
-            price: req.body.price,
-            catagory: req.body.catagory,
-            canteen: req.body.canteen,
+            description: req.body.description || "No description provided",
+            price: 0,
+            catagory: req.body.catagory || "General",
+            canteen: req.body.canteen || "Main Canteen",
             image: image_filename
         });
 
         await food.save();
-        res.status(200).send({
-            success: true,
-            alert: "Food Added"
-        })
+        res.status(200).send({ success: true, alert: "Food Added to Helping Hand" });
     } catch (err) {
-        console.log(err.toString());
-        res.status(500).send({
-            Alert: err.toString()
-        })
+        console.error("Backend addFood Error:", err);
+        res.status(500).send({ success: false, Alert: err.toString() });
     }
 }
 //list foods
@@ -51,26 +56,25 @@ export const listFood = async (req, res) => {
         });
     }
 }
-//frontend list
+
+
 export const listFoodFrontEnd = async (req, res) => {
   try {
-    const { userName } = req.body; 
-    
-    const Huser = await helpuser.findOne({ name: userName });
+    const result = await helpingHandModel.find({});
 
-    if (Huser) {
-      const result = await helpingHandModel.find({});
+    if (result) {
       return res.status(200).send({
         success: true,
         Data: result,
+        User: true 
       });
     } else {
       return res.status(200).send({
         success: true,
-        User: false,
+        Data: [],
+        User: true
       });
     }
-
   } catch (err) {
     console.error("Error in listFoodFrontEnd:", err);
     res.status(500).send({
@@ -79,8 +83,6 @@ export const listFoodFrontEnd = async (req, res) => {
     });
   }
 };
-
-//remove fooditem
 
 export const removeFood = async (req, res) => {
     try {

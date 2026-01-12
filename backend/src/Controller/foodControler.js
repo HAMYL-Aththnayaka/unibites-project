@@ -1,106 +1,82 @@
 import foodModel from "../Models/foodModel.js";
-import fs from 'fs'
+import fs from 'fs';
 
+// ADD FOOD
+export const addFood = async (req, res) => {
+  try {
+    const food = new foodModel({
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      catagory: req.body.catagory, 
+      canteen: req.body.canteen,
+      image: req.file.filename,
+    });
 
-//add food item
-export const addFood = async(req,res)=>{
-    try{
-        let image_filename =`${req.file.filename}`;
+    await food.save();
 
-        const food = new foodModel({
-            name:req.body.name,
-            description:req.body.description,
-            price:req.body.price,
-            catagory:req.body.catagory,
-            canteen:req.body.canteen,
-            image:image_filename
-        });
+    res.status(200).send({
+      success: true,
+      alert: "Food Added",
+    });
+  } catch (err) {
+    res.status(500).send({
+      success: false,
+      alert: "Food Not Added",
+    });
+  }
+};
 
-        await food.save();
-        res.status(200).send({
-            success:true,
-            alert:"Food Added"
-        })
-    }catch(err){
-        console.log(err.toString());
-        res.status(500).send({
-            Alert:"Food Not added"
-        })
-    }
-}
-//list foods
-export const listFood = async(req,res)=>{
-    try{
-        const result = await foodModel.find({});
+// LIST FOOD 
+export const listFood = async (req, res) => {
+  try {
+    const result = await foodModel.find({});
 
-        if(result.length > 0){
-            res.status(200).send({
-                success:true,
-                Data:result
-            })
-        }else{
-            res.status(404).send({
-                success:true,
-                Alert:'No Data Found'
-            })
-        }
-    }catch(err){
-        res.status(500).send({
-            success:false,
-            Alert:'Error'
-        })
-    }
-}
+    res.status(200).send({
+      success: true,
+      Data: result,  
+    });
+  } catch (err) {
+    res.status(500).send({
+      success: false,
+      Data: [],
+      alert: "Error fetching food",
+    });
+  }
+};
 
-//remove fooditem
-
+// REMOVE FOOD
 export const removeFood = async (req, res) => {
-    try {
-        const id = req.body.id;
+  try {
+    const { id } = req.body;
 
-        if (!id) {
-            return res.status(403).send({
-                success: false,
-                alert: "Please send the Id to delete"
-            });
-        }
-
-        const food = await foodModel.findById(id);
-        
-        if (!food) {
-            return res.status(404).send({
-                success: false,
-                alert: "Id not valid"
-            });
-        }
-
-
-        fs.unlink(`src/uploads/${food.image}`, (err) => {
-            if (err) console.error("Failed to delete image:", err);
-            else console.log("Image deleted successfully");
-        });
-
-        //fs.unlink(`src/uploads/${food.image}`,()=>{})
-        //above comented code == error
-        
-        const deletedResult = await foodModel.findByIdAndDelete(id);
-        if (!deletedResult) {
-            return res.status(405).send({
-                success: false,
-                alert: "Something went wrong. Could not delete."
-            });
-        }
-
-        res.status(200).send({
-            success: true,
-            alert: "Item removed successfully"
-        });
-
-    } catch (err) {
-        console.log(err.toString());
-        res.status(500).send({
-            success: false,
-            alert: err.toString()
-        });
+    if (!id) {
+      return res.status(400).send({
+        success: false,
+        alert: "Please send the Id",
+      });
     }
+
+    const food = await foodModel.findById(id);
+    if (!food) {
+      return res.status(404).send({
+        success: false,
+        alert: "Food not found",
+      });
+    }
+
+    fs.unlink(`src/uploads/${food.image}`, () => {});
+
+    await foodModel.findByIdAndDelete(id);
+
+    res.status(200).send({
+      success: true,
+      alert: "Item removed successfully",
+    });
+  } catch (err) {
+    res.status(500).send({
+      success: false,
+      alert: "Delete failed",
+    });
+  }
 };

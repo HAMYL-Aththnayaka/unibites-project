@@ -44,8 +44,8 @@ const ContactAdmin = () => {
   registration: formData.registrationNo,
   faculty: formData.faculty,
   reason: formData.reason,
-  recomendation: formData.recommendation, // matches backend
-  scholership: formData.scholarships, // matches backend
+  recomendation: formData.recommendation, 
+  scholership: formData.scholarships,
 };
 
   try {

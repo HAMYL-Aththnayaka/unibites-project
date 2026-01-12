@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Navbar from './components/navbar/Navbar';
+import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home/Home';
 import Help from './pages/HelpingHand/HelpingHand';
 import Cart from './pages/Cart/Cart';
@@ -11,10 +11,7 @@ import LogginPopup from './components/LoginPopup/LogginPopup';
 import Verify from './pages/Verify/Verify';
 import Myorders from './pages/Myorders/Myorders';
 
-// **1. Import the ToastContainer**
 import { ToastContainer } from 'react-toastify';
-
-// **2. Import the CSS for styling**
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {

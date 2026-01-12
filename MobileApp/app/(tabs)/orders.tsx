@@ -1,61 +1,116 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native';
-import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList, SafeAreaView, ActivityIndicator, RefreshControl } from 'react-native';
+import { StoreContext } from '../../context/StoreContext';
+import api from '../../lib/axios';
+import { Package, Clock } from 'lucide-react-native';
 
-interface Order {
-  _id: string;
-  amount: number;
-  status: string;
-  date: string;
-  items: any[];
-}
-
-export default function Orders() {
-  const [orders, setOrders] = useState<Order[]>([]);
+const Orders = () => {
+  const { token } = useContext(StoreContext)!;
+  const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const API_BASE_URL = "http://192.168.1.10:3000"; // Use your Local IP
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchOrders = async () => {
+    try {
+      const res = await api.post('/api/order/userorders', {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.data.success) {
+        setOrders(res.data.data.reverse());
+      }
+    } catch (err) {
+      console.error("Orders fetch error:", err);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const token = "YOUR_JWT_TOKEN"; // Get from storage
-        const response = await axios.post(`${API_BASE_URL}/api/order/userorders`, {}, { headers: { token } });
-        if (response.data.success) {
-          setOrders(response.data.data);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (token) fetchOrders();
+  }, [token]);
+
+  const onRefresh = () => {
+    setRefreshing(true);
     fetchOrders();
-  }, []);
+  };
+
+  const renderOrderItem = ({ item }: { item: any }) => (
+    <View style={styles.orderCard}>
+      <View style={styles.cardHeader}>
+        <View style={styles.iconBox}>
+          <Package size={24} color="#ea580c" />
+        </View>
+        <View style={styles.headerInfo}>
+          <Text style={styles.orderAmount}>LKR {item.amount}.00</Text>
+          <Text style={styles.itemCount}>Items: {item.items.length}</Text>
+        </View>
+        <View style={[styles.statusBadge, { backgroundColor: item.status === 'Delivered' ? '#dcfce7' : '#fff7ed' }]}>
+          <Text style={[styles.statusText, { color: item.status === 'Delivered' ? '#166534' : '#9a3412' }]}>
+            {item.status}
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.itemsList}>
+        <Text style={styles.itemsText}>
+          {item.items.map((i: any) => `${i.name} x ${i.quantity}`).join(", ")}
+        </Text>
+      </View>
+
+      <View style={styles.cardFooter}>
+        <Clock size={14} color="#9ca3af" />
+        <Text style={styles.dateText}>{new Date(item.date).toLocaleDateString()}</Text>
+      </View>
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>My Orders</Text>
-      {loading ? <ActivityIndicator color="#ea580c" /> : (
-        <ScrollView contentContainerStyle={styles.list}>
-          {orders.map((order) => (
-            <View key={order._id} style={styles.orderCard}>
-              <Text style={styles.status}>{order.status}</Text>
-              <Text style={styles.amount}>Total: ${order.amount}</Text>
-              <Text style={styles.date}>{new Date(order.date).toLocaleDateString()}</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>My Orders</Text>
+      </View>
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#ea580c" style={{ flex: 1 }} />
+      ) : (
+        <FlatList
+          data={orders}
+          keyExtractor={(item) => item._id}
+          renderItem={renderOrderItem}
+          contentContainerStyle={styles.listContent}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <Package size={48} color="#9ca3af" />
+              <Text style={styles.emptyText}>No orders found yet.</Text>
             </View>
-          ))}
-        </ScrollView>
+          }
+        />
       )}
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAFA', padding: 24 },
-  title: { fontSize: 24, fontWeight: '900', marginBottom: 20 },
-  list: { paddingBottom: 100 },
-  orderCard: { backgroundColor: 'white', padding: 20, borderRadius: 20, marginBottom: 15, elevation: 2 },
-  status: { color: '#ea580c', fontWeight: 'bold', marginBottom: 5 },
-  amount: { fontSize: 18, fontWeight: 'bold' },
-  date: { color: '#9ca3af', marginTop: 5 }
+  container: { flex: 1, backgroundColor: '#FAFAFA' },
+  header: { padding: 24, backgroundColor: 'white' },
+  title: { fontSize: 24, fontWeight: '900', color: '#111827' },
+  listContent: { padding: 20 },
+  orderCard: { backgroundColor: 'white', borderRadius: 20, padding: 16, marginBottom: 16, elevation: 2 },
+  cardHeader: { flexDirection: 'row', alignItems: 'center' },
+  iconBox: { width: 48, height: 48, borderRadius: 12, backgroundColor: '#fff7ed', alignItems: 'center', justifyContent: 'center' },
+  headerInfo: { flex: 1, marginLeft: 12 },
+  orderAmount: { fontSize: 16, fontWeight: 'bold', color: '#111827' },
+  itemCount: { fontSize: 12, color: '#6b7280', marginTop: 2 },
+  statusBadge: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 10 },
+  statusText: { fontSize: 12, fontWeight: 'bold' },
+  itemsList: { marginTop: 12, paddingVertical: 12, borderTopWidth: 1, borderTopColor: '#f3f4f6' },
+  itemsText: { fontSize: 14, color: '#4b5563', lineHeight: 20 },
+  cardFooter: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
+  dateText: { fontSize: 12, color: '#9ca3af', marginLeft: 6 },
+  emptyContainer: { alignItems: 'center', marginTop: 100 },
+  emptyText: { marginTop: 10, color: '#9ca3af' }
 });
+
+export default Orders;

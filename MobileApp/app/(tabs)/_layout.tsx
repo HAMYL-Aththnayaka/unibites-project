@@ -1,42 +1,20 @@
-import React from 'react';
 import { Tabs } from 'expo-router';
-import { Home as HomeIcon, ClipboardList } from 'lucide-react-native';
+import { HeartHandshake, Home, ShoppingBag, User } from 'lucide-react-native';
 
 export default function TabLayout() {
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: '#ea580c',
-        tabBarStyle: {
-          position: 'absolute',
-          bottom: 24,
-          left: 24,
-          right: 24,
-          height: 80,
-          borderRadius: 32,
-          backgroundColor: 'white',
-          elevation: 5,
-        },
-      }}
-    >
-       {/*  Home tab */}
-      <Tabs.Screen
-        name="Home" 
-        options={{
-          tabBarIcon: ({ color }) => <HomeIcon size={24} color={color} />,
-          title: '', // Hides text label for a cleaner look
-        }}
+    <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: '#ea580c' }}>
+      <Tabs.Screen name="Home" options={{ tabBarIcon: ({ color }) => <Home color={color} /> }} />
+     
+      <Tabs.Screen 
+        name="helping-hand" 
+        options={{ 
+          title: 'Helping Hand',
+          tabBarIcon: ({ color }) => <HeartHandshake color={color} /> 
+        }} 
       />
-      
-      {/*  orders tab */}
-      <Tabs.Screen
-        name="orders"
-        options={{
-          tabBarIcon: ({ color }) => <ClipboardList size={24} color={color} />,
-          title: '',
-        }}
-      />
+      <Tabs.Screen name="orders" options={{ tabBarIcon: ({ color }) => <ShoppingBag color={color} /> }} />
+      <Tabs.Screen name="profile" options={{ tabBarIcon: ({ color }) => <User color={color} /> }} />
     </Tabs>
   );
 }
