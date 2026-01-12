@@ -117,7 +117,7 @@ const processHHTransfer = async (order) => {
                 <option value="Food Processing">Food Processing</option>
                 <option value="Out for Delivery">Out for Delivery</option>
                 <option value="Delivered">Delivered</option>
-                <option value="Add to HH">Add to HH (Move & Delete)</option>
+                <option value="Add to HH">Add to HH </option>// used to send to helping hand and delete
               </select>
             </div>
           ))
