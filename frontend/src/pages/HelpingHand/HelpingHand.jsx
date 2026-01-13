@@ -2,23 +2,18 @@ import React, { useContext } from 'react';
 import FoodItem from '../../components/FoodItem/FoodItem';
 import { StoreContext } from '../../context/StoreContext';
 import './HelpingHand.css';
-<<<<<<< HEAD
-
-
-const HelpingHandDisplay = ({ category = 'All' }) => {
-  const { helping_food_list =[] } = useContext(StoreContext);
-  
-=======
 import { useNavigate } from 'react-router-dom';
 
 const HelpingHandDisplay = ({ category = 'All' }) => {
-  const { helping_food_list =[] } = useContext(StoreContext);
+  const { helping_food_list = [] } = useContext(StoreContext);
   const navigate = useNavigate();
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
-  console.log(helping_food_list)
+
+  console.log(helping_food_list);
+
   const filteredFoods = helping_food_list.filter(
     (item) => category === "All" || item.category === category
   );
+
   return (
     <div>
       <div className="food-display1" id="helping-hand-display">
@@ -29,11 +24,8 @@ const HelpingHandDisplay = ({ category = 'All' }) => {
               key={item._id}
               id={item._id}
               name={item.name}
-<<<<<<< HEAD
-              canteen={item.canteen}
-=======
               description={item.description}
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
+              canteen={item.canteen}
               price={0} 
               image={item.image}
               isHelpingHand={true} 

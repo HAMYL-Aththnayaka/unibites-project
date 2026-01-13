@@ -9,28 +9,15 @@ const PlaceOrder = () => {
   if (!context) return null;
 
   const { getTotalCartAmount, token, food_list, cartItems } = context;
-  const [paymentMethod, setPaymentMethod] = useState('online');
-  const [orderType, setOrderType] = useState('delivery');
+  const [paymentMethod, setPaymentMethod] = useState<'online' | 'counter'>('online');
+  const [orderType, setOrderType] = useState<'delivery' | 'dinein'>('delivery');
   const router = useRouter();
 
   const [data, setData] = useState({
-<<<<<<< HEAD
-    firstName: '', 
-    lastName: '', 
-    email: '', 
-    nearest_town: '',
-    street: '', 
-    address: '', 
-    phone_number: ''
-  });
-
-=======
     firstName: '', lastName: '', email: '', nearest_town: '',
     street: '', address: '', phone_number: ''
   });
 
-  
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
   const subtotal = getTotalCartAmount();
   const deliveryFee = orderType === 'delivery' ? 200 : 0;
   const total = subtotal + deliveryFee;
@@ -39,114 +26,77 @@ const PlaceOrder = () => {
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-<<<<<<< HEAD
 
+  const onPlaceOrder = async () => {
+  if (!token) {
+    Alert.alert("Error", "Please login first.");
+    router.push('/');
+    return;
+  }
 
-const onPlaceOrder = async (addressData: any) => {
+  if (Object.values(cartItems).every(qty => qty === 0)) {
+    Alert.alert("Error", "Your cart is empty!");
+    return;
+  }
+
   try {
+    const orderItems = food_list
+      .filter(item => cartItems[item._id] > 0)
+      .map(item => ({
+        ...item,
+        quantity: cartItems[item._id],
+        isHelpingHand: item.price === 0,
+      }));
 
-    const isHelpingHand = food_list.some(item => cartItems[item._id] > 0 && item.price === 0);
+    const isHelpingHandOrder = orderItems.every(item => item.isHelpingHand);
 
     const orderData = {
-      address: addressData,
-      items: food_list.filter(item => cartItems[item._id] > 0).map(item => ({...item, quantity: cartItems[item._id]})),
-      totalAmount: isHelpingHand ? 0 : total, 
-      paymentMethod: paymentMethod,
-      orderType: orderType
+      userId: token,
+      items: orderItems,
+      amount: isHelpingHandOrder ? 0 : subtotal + (orderType === 'delivery' ? 200 : 0),
+      address: data,
+      paymentMethod,
+      orderType,
+      payment: isHelpingHandOrder ? false : paymentMethod === 'online',
     };
 
-    const response = await api.post('/api/order/create-order', orderData, {
+    const res = await api.post('/api/order/create-order', orderData, {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-if (response.data.success) {
-      Alert.alert("Success", "Order placed successfully!");
-
-      if (router.canGoBack()) {
-          router.replace('/Home'); 
-      } else {
-          router.replace('/Home'); 
-      }
+    if (res.data.success) {
+      
+      router.replace('/(tabs)/Home');
+      Alert.alert("Success", res.data.message || "Order placed successfully!");
+    } else {
+      Alert.alert("Error", "Something went wrong.");
     }
-
-
   } catch (err: any) {
-  
-    const msg = err.response?.data?.message || err.message;
-    Alert.alert("Order Failed", msg);
+    const msg = err.response?.data?.message || err.message || "Failed to place order";
+    Alert.alert("Error", msg);
   }
 };
-=======
-  const onPlaceOrder = async () => {
-    if (!token) {
-      Alert.alert("Error", "Please login first.");
-      router.push('/');
-      return;
-    }
 
-    if (subtotal === 0) {
-      Alert.alert("Error", "Your cart is empty!");
-      return;
-    }
 
-    try {
-      const items = food_list
-        .filter(item => cartItems[item._id] > 0)
-        .map(item => ({
-          name: item.name,
-          price: item.price,
-          quantity: cartItems[item._id],
-        }));
-
-      const orderData = {
-        userId: token,      
-        items,
-        amount: total,
-        address: data,
-        paymentMethod,
-        orderType,
-        payment: paymentMethod === 'online' 
-      };
-
-      const res = await api.post('/api/order/create-order', orderData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      if (res.data.success) {
-        Alert.alert("Success", res.data.message);
-        router.replace('/(tabs)/orders');
-      } else {
-        Alert.alert("Error", "Something went wrong.");
-      }
-    } catch (err) {
-      console.error(err);
-      Alert.alert("Error", "Failed to place order.");
-    }
-  };
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-<<<<<<< HEAD
           <Text style={styles.backText}>← Back to Cart</Text>
-=======
-            <Text style={styles.backText}>← Back to Cart</Text>
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
         </TouchableOpacity>
 
         <Text style={styles.title}>Order Information</Text>
 
         <Text style={styles.label}>Select Order Type:</Text>
         <View style={styles.radioGroup}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.radioBtn, orderType === 'delivery' && styles.activeRadio]}
             onPress={() => setOrderType('delivery')}
           >
             <Text style={orderType === 'delivery' ? styles.whiteText : styles.blackText}>Delivery</Text>
           </TouchableOpacity>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.radioBtn, orderType === 'dinein' && styles.activeRadio]}
             onPress={() => setOrderType('dinein')}
           >
@@ -157,14 +107,44 @@ if (response.data.success) {
         {orderType === 'delivery' && (
           <View style={styles.form}>
             <View style={styles.row}>
-              <TextInput style={[styles.input, { flex: 1, marginRight: 10 }]} placeholder="First Name" onChangeText={(v) => handleInputChange('firstName', v)} />
-              <TextInput style={[styles.input, { flex: 1 }]} placeholder="Last Name" onChangeText={(v) => handleInputChange('lastName', v)} />
+              <TextInput
+                style={[styles.input, { flex: 1, marginRight: 10 }]}
+                placeholder="First Name"
+                onChangeText={(v) => handleInputChange('firstName', v)}
+              />
+              <TextInput
+                style={[styles.input, { flex: 1 }]}
+                placeholder="Last Name"
+                onChangeText={(v) => handleInputChange('lastName', v)}
+              />
             </View>
-            <TextInput style={styles.input} placeholder="Email Address" keyboardType="email-address" onChangeText={(v) => handleInputChange('email', v)} />
-            <TextInput style={styles.input} placeholder="Nearest Town" onChangeText={(v) => handleInputChange('nearest_town', v)} />
-            <TextInput style={styles.input} placeholder="Street" onChangeText={(v) => handleInputChange('street', v)} />
-            <TextInput style={styles.input} placeholder="Address" onChangeText={(v) => handleInputChange('address', v)} />
-            <TextInput style={styles.input} placeholder="Phone Number" keyboardType="phone-pad" onChangeText={(v) => handleInputChange('phone_number', v)} />
+            <TextInput
+              style={styles.input}
+              placeholder="Email Address"
+              keyboardType="email-address"
+              onChangeText={(v) => handleInputChange('email', v)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Nearest Town"
+              onChangeText={(v) => handleInputChange('nearest_town', v)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Street"
+              onChangeText={(v) => handleInputChange('street', v)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Address"
+              onChangeText={(v) => handleInputChange('address', v)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Phone Number"
+              keyboardType="phone-pad"
+              onChangeText={(v) => handleInputChange('phone_number', v)}
+            />
           </View>
         )}
 
@@ -186,34 +166,24 @@ if (response.data.success) {
           </View>
 
           <View style={styles.paymentSection}>
-<<<<<<< HEAD
             <Text style={styles.label}>Payment Method:</Text>
             <View style={styles.radioGroup}>
-              <TouchableOpacity onPress={() => setPaymentMethod('online')} style={[styles.radioBtn, paymentMethod === 'online' && styles.activeRadio]}>
+              <TouchableOpacity
+                onPress={() => setPaymentMethod('online')}
+                style={[styles.radioBtn, paymentMethod === 'online' && styles.activeRadio]}
+              >
                 <Text style={paymentMethod === 'online' ? styles.whiteText : styles.blackText}>Online</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setPaymentMethod('counter')} style={[styles.radioBtn, paymentMethod === 'counter' && styles.activeRadio]}>
+              <TouchableOpacity
+                onPress={() => setPaymentMethod('counter')}
+                style={[styles.radioBtn, paymentMethod === 'counter' && styles.activeRadio]}
+              >
                 <Text style={paymentMethod === 'counter' ? styles.whiteText : styles.blackText}>Counter</Text>
               </TouchableOpacity>
             </View>
           </View>
 
-          
-          <TouchableOpacity style={styles.placeBtn} onPress={() => onPlaceOrder(data)}>
-=======
-             <Text style={styles.label}>Payment Method:</Text>
-             <View style={styles.radioGroup}>
-                <TouchableOpacity onPress={() => setPaymentMethod('online')} style={[styles.radioBtn, paymentMethod === 'online' && styles.activeRadio]}>
-                    <Text style={paymentMethod === 'online' ? styles.whiteText : styles.blackText}>Online</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setPaymentMethod('counter')} style={[styles.radioBtn, paymentMethod === 'counter' && styles.activeRadio]}>
-                    <Text style={paymentMethod === 'counter' ? styles.whiteText : styles.blackText}>Counter</Text>
-                </TouchableOpacity>
-             </View>
-          </View>
-
           <TouchableOpacity style={styles.placeBtn} onPress={onPlaceOrder}>
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
             <Text style={styles.placeBtnText}>Place Order</Text>
           </TouchableOpacity>
         </View>
@@ -244,7 +214,7 @@ const styles = StyleSheet.create({
   paymentSection: { marginTop: 10 },
   placeBtn: { backgroundColor: '#ea580c', padding: 18, borderRadius: 16, alignItems: 'center', marginTop: 20 },
   placeBtnText: { color: 'white', fontWeight: 'bold', fontSize: 18 },
-  form: { marginTop: 10 }
+  form: { marginTop: 10 },
 });
 
 export default PlaceOrder;

@@ -1,10 +1,8 @@
-<<<<<<< HEAD
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, FlatList, SafeAreaView, ActivityIndicator, RefreshControl, Alert } from 'react-native';
-=======
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, SafeAreaView, ActivityIndicator, RefreshControl } from 'react-native';
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
+import { 
+  View, Text, StyleSheet, FlatList, SafeAreaView, 
+  ActivityIndicator, RefreshControl, Alert 
+} from 'react-native';
 import { StoreContext } from '../../context/StoreContext';
 import api from '../../lib/axios';
 import { Package, Clock } from 'lucide-react-native';
@@ -14,22 +12,20 @@ const Orders = () => {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
-<<<<<<< HEAD
   const prevOrdersRef = useRef<string[]>([]);
 
-=======
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
   const fetchOrders = async () => {
     try {
-      const res = await api.post('/api/order/userorders', {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-<<<<<<< HEAD
-      
+      const res = await api.post(
+        '/api/order/userorders', 
+        {}, 
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
       if (res.data.success) {
         let allFetchedOrders = res.data.data;
 
+        // Alert for completed/moved orders
         const currentOrderIds = allFetchedOrders.map((o: any) => o._id);
         const prevOrderIds = prevOrdersRef.current;
 
@@ -41,17 +37,13 @@ const Orders = () => {
           });
         }
 
+        // Only keep active orders
         const activeOrders = allFetchedOrders.filter((o: any) => 
           o.status !== 'Delivered' && o.status !== 'Moved to HH'
         ).reverse();
 
         setOrders(activeOrders);
-       
         prevOrdersRef.current = activeOrders.map((o: any) => o._id);
-=======
-      if (res.data.success) {
-        setOrders(res.data.data.reverse());
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
       }
     } catch (err) {
       console.error("Orders fetch error:", err);
@@ -65,15 +57,13 @@ const Orders = () => {
     if (token) fetchOrders();
   }, [token]);
 
-<<<<<<< HEAD
+  // Auto-refresh every 5s
   useEffect(() => {
     if (!token) return;
     const interval = setInterval(fetchOrders, 5000);
     return () => clearInterval(interval);
   }, [token]);
 
-=======
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
   const onRefresh = () => {
     setRefreshing(true);
     fetchOrders();
@@ -89,13 +79,18 @@ const Orders = () => {
           <Text style={styles.orderAmount}>LKR {item.amount}.00</Text>
           <Text style={styles.itemCount}>Items: {item.items.length}</Text>
         </View>
-<<<<<<< HEAD
-        <View style={[styles.statusBadge, { backgroundColor: '#fff7ed' }]}>
-          <Text style={[styles.statusText, { color: '#9a3412' }]}>
-=======
-        <View style={[styles.statusBadge, { backgroundColor: item.status === 'Delivered' ? '#dcfce7' : '#fff7ed' }]}>
-          <Text style={[styles.statusText, { color: item.status === 'Delivered' ? '#166534' : '#9a3412' }]}>
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
+        <View
+          style={[
+            styles.statusBadge, 
+            { backgroundColor: item.status === 'Delivered' ? '#dcfce7' : '#fff7ed' }
+          ]}
+        >
+          <Text
+            style={[
+              styles.statusText, 
+              { color: item.status === 'Delivered' ? '#166534' : '#9a3412' }
+            ]}
+          >
             {item.status}
           </Text>
         </View>
@@ -117,11 +112,7 @@ const Orders = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-<<<<<<< HEAD
         <Text style={styles.title}>Active Orders</Text>
-=======
-        <Text style={styles.title}>My Orders</Text>
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
       </View>
 
       {loading ? (
@@ -136,11 +127,7 @@ const Orders = () => {
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
               <Package size={48} color="#9ca3af" />
-<<<<<<< HEAD
               <Text style={styles.emptyText}>No active orders found.</Text>
-=======
-              <Text style={styles.emptyText}>No orders found yet.</Text>
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
             </View>
           }
         />

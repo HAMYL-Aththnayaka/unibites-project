@@ -32,57 +32,30 @@ export const StoreContextProvider = ({ children }: { children: ReactNode }) => {
   const [food_list, setFoodList] = useState<FoodItem[]>([]);
   const [helping_food_list, setHelpingFoodList] = useState<FoodItem[]>([]);
 
-<<<<<<< HEAD
   // Load food and helping hand items
   const loadData = async (userToken: string) => {
     try {
       const fRes = await api.get('/api/foods/list');
       setFoodList(fRes.data?.Data || []);
 
-=======
-const loadData = async (userToken: string) => {
-    try {
-      const fRes = await api.get('/api/foods/list');
-      setFoodList(fRes.data?.Data || []);
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
       if (userToken) {
         const hRes = await api.get('/api/HelpingHand/foods/listfront', {
           headers: { Authorization: `Bearer ${userToken}` }
         });
-<<<<<<< HEAD
         setHelpingFoodList(hRes.data?.Data || []);
-=======
-        
-        console.log("Helping Hand Response Raw:", hRes.data);
-
-        if (hRes.data?.Data) {
-          setHelpingFoodList(hRes.data.Data);
-        } else {
-          setHelpingFoodList([]); 
-        }
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
       }
     } catch (err) {
       console.error("Fetch error in StoreContext:", err);
     }
   };
 
-<<<<<<< HEAD
   // Load cart
-=======
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
   const loadCartData = async (userToken: string) => {
     try {
       const response = await api.post('/api/cart/get', {}, { 
         headers: { Authorization: `Bearer ${userToken}` } 
       });
-<<<<<<< HEAD
       if (response.data.success) setCartItems(response.data.cartData);
-=======
-      if (response.data.success) {
-        setCartItems(response.data.cartData);
-      }
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
     } catch (err) {
       console.error("Cart load error:", err);
     }
@@ -90,15 +63,7 @@ const loadData = async (userToken: string) => {
 
   const addToCart = async (itemId: string, isHelpingHand = false) => {
     setCartItems(prev => ({ ...prev, [itemId]: (prev[itemId] || 0) + 1 }));
-<<<<<<< HEAD
     if (token) await api.post('/api/cart/add', { itemId, isHelpingHand }, { headers: { Authorization: `Bearer ${token}` } });
-=======
-    if (token) {
-      await api.post('/api/cart/add', { itemId, isHelpingHand }, { 
-        headers: { Authorization: `Bearer ${token}` } 
-      });
-    }
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
   };
 
   const removeFromCart = async (itemId: string) => {
@@ -107,15 +72,7 @@ const loadData = async (userToken: string) => {
       if (updated[itemId] === 0) delete updated[itemId];
       return updated;
     });
-<<<<<<< HEAD
     if (token) await api.post('/api/cart/remove', { itemId }, { headers: { Authorization: `Bearer ${token}` } });
-=======
-    if (token) {
-      await api.post('/api/cart/remove', { itemId }, { 
-        headers: { Authorization: `Bearer ${token}` } 
-      });
-    }
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
   };
 
   const getTotalCartAmount = () => {
@@ -132,25 +89,12 @@ const loadData = async (userToken: string) => {
   useEffect(() => {
     const init = async () => {
       const savedToken = await AsyncStorage.getItem('token');
-<<<<<<< HEAD
       if (savedToken) setToken(savedToken);
       await loadData(savedToken || '');
       if (savedToken) await loadCartData(savedToken);
     };
     init();
   }, []);
-=======
-      if (savedToken) {
-        setToken(savedToken);
-        await loadCartData(savedToken);
-        await loadData(savedToken);
-      } else {
-        await loadData('');
-      }
-    };
-    init();
-  }, [token]);
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
 
   return (
     <StoreContext.Provider value={{ 
@@ -160,8 +104,4 @@ const loadData = async (userToken: string) => {
       {children}
     </StoreContext.Provider>
   );
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7

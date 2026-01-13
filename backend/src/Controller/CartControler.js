@@ -4,11 +4,8 @@ import userModel from '../Models/userModel.js'
 //add to cart
 export const addToCart =async(req,res)=>{
         try{
-<<<<<<< HEAD
                 let userData = await userModel.findOne({_id:req.body.userId})// findbyid ok 2
-=======
-                let userData = await userModel.findOne({_id:req.body.userId})//findbyid ok 2
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
+
                 let cartData = await userData.cartData;
 
                 if(!cartData[req.body.itemId]){
@@ -77,14 +74,7 @@ export const getCart =async(req,res)=>{
             success: true,
             cartData,
             message: isEmpty ? 'Cart is empty' : undefined
-<<<<<<< HEAD
-        });          
-=======
         });
-
-                
-
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
     }catch(err){
         console.log(err.toString())
             res.status(500).send({   

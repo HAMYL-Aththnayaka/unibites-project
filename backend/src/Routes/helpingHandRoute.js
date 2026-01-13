@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 //helping hand backend eka
-=======
-//helping hand backend
->>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
+
 import express from 'express'
 import {addFood, listFood, removeFood,listFoodFrontEnd} from '../Controller/helpingHandFoodController.js'
 import multer from 'multer'
