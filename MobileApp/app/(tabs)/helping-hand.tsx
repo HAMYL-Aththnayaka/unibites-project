@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+<<<<<<< HEAD
 import {
   View,
   Text,
@@ -13,6 +14,13 @@ import { StoreContext } from '../../context/StoreContext';
 import { Heart, AlertCircle, Star, MapPin } from 'lucide-react-native';
 
 const API_BASE_URL = 'http://localhost:3000';
+=======
+import { View, Text, Image, ScrollView, TouchableOpacity, SafeAreaView, StyleSheet, ActivityIndicator } from 'react-native';
+import { StoreContext } from '../../context/StoreContext';
+import { Heart, AlertCircle } from 'lucide-react-native';
+
+const API_BASE_URL = 'http://localhost:3000'; 
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
 
 const HelpingHand = () => {
   const context = useContext(StoreContext);
@@ -20,6 +28,7 @@ const HelpingHand = () => {
 
   if (!context) return null;
 
+<<<<<<< HEAD
   const {
     helping_food_list,
     cartItems,
@@ -30,6 +39,12 @@ const HelpingHand = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 400);
+=======
+  const { helping_food_list, cartItems, addToCart, removeFromCart, token } = context;
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 500);
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
     return () => clearTimeout(timer);
   }, [helping_food_list]);
 
@@ -54,6 +69,7 @@ const HelpingHand = () => {
             <AlertCircle size={50} color="#9ca3af" />
             <Text style={styles.loginMsg}>Please login to check eligibility.</Text>
           </View>
+<<<<<<< HEAD
 
         ) : helping_food_list && helping_food_list.length > 0 ? (
           helping_food_list.map(item => {
@@ -87,12 +103,32 @@ const HelpingHand = () => {
                     {quantity === 0 ? (
                       <TouchableOpacity
                         style={styles.addBtn}
+=======
+        ) : helping_food_list.length > 0 ? (
+          helping_food_list.map((item) => {
+            const quantity = cartItems[item._id] || 0;
+            return (
+              <View key={item._id} style={styles.card}>
+                <Image 
+                  source={{ uri: `${API_BASE_URL}/images/${item.image}` }} 
+                  style={styles.image} 
+                  resizeMode="cover"
+                />
+                <View style={styles.cardInfo}>
+                  <Text style={styles.foodName}>{item.name}</Text>
+                  <View style={styles.footer}>
+                    <Text style={styles.freeText}>FREE</Text>
+                    {quantity === 0 ? (
+                      <TouchableOpacity 
+                        style={styles.addBtn} 
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
                         onPress={() => addToCart(item._id, true)}
                       >
                         <Text style={styles.addBtnText}>Add to Cart</Text>
                       </TouchableOpacity>
                     ) : (
                       <View style={styles.counter}>
+<<<<<<< HEAD
                         <TouchableOpacity
                           onPress={() => removeFromCart(item._id)}
                           style={styles.countBtn}
@@ -106,6 +142,13 @@ const HelpingHand = () => {
                           onPress={() => addToCart(item._id, true)}
                           style={styles.countBtn}
                         >
+=======
+                        <TouchableOpacity onPress={() => removeFromCart(item._id)} style={styles.countBtn}>
+                          <Text style={styles.countText}>−</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.quantityText}>{quantity}</Text>
+                        <TouchableOpacity onPress={() => addToCart(item._id, true)} style={styles.countBtn}>
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
                           <Text style={styles.countText}>+</Text>
                         </TouchableOpacity>
                       </View>
@@ -130,6 +173,7 @@ const HelpingHand = () => {
   );
 };
 
+<<<<<<< HEAD
 export default HelpingHand;
 
 
@@ -241,3 +285,30 @@ const styles = StyleSheet.create({
     lineHeight: 20
   }
 });
+=======
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#FAFAFA' },
+  content: { padding: 24 },
+  header: { marginBottom: 24 },
+  title: { fontSize: 28, fontWeight: '900', color: '#ea580c' },
+  subtitle: { fontSize: 14, color: '#6b7280' },
+  card: { backgroundColor: '#fff', borderRadius: 24, marginBottom: 20, overflow: 'hidden', elevation: 2 },
+  image: { width: '100%', height: 180 },
+  cardInfo: { padding: 20 },
+  foodName: { fontSize: 18, fontWeight: 'bold', color: '#111827' },
+  footer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 },
+  freeText: { fontSize: 18, fontWeight: '900', color: '#10b981' },
+  addBtn: { backgroundColor: '#ea580c', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 12 },
+  addBtnText: { color: 'white', fontWeight: 'bold' },
+  counter: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#ea580c', borderRadius: 12, padding: 6 },
+  countBtn: { paddingHorizontal: 10 },
+  countText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
+  quantityText: { color: 'white', fontWeight: 'bold', marginHorizontal: 10 },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100 },
+  loginMsg: { color: '#6b7280', marginTop: 10 },
+  noDataTitle: { fontSize: 20, fontWeight: 'bold', marginTop: 15, color: '#111827' },
+  noDataText: { textAlign: 'center', marginTop: 10, color: '#6b7280', lineHeight: 20 }
+});
+
+export default HelpingHand;
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7

@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 //admin food backend eka
+=======
+//admin food backend
+
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
 import express from 'express'
 import {addFood, listFood, removeFood} from '../Controller/foodControler.js'
 import multer from 'multer'

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import helpingHandModel from '../Models/helpingHandModel.js'; 
 import orderModel from '../Models/orderModel.js';
 
@@ -31,16 +32,41 @@ export const createOrder = async (req, res) => {
       paymentMethod: paymentMethod,
       orderType: orderType,
       payment: paymentMethod === 'online',
+=======
+import orderModel from '../Models/orderModel.js';
+
+// Create Order 
+export const createOrder = async (req, res) => {
+  try {
+    const { userId, items, amount, address, paymentMethod, orderType } = req.body;
+
+    const order = await orderModel.create({
+      userId,
+      items,
+      amount,
+      address,
+      paymentMethod,
+      orderType,
+      payment: paymentMethod === 'online' ? true : false,
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
       status: 'Pending'
     });
 
     res.status(201).json({
       success: true,
+<<<<<<< HEAD
       message: "Order placed successfully",
       orderId: order._id
     });
   } catch (err) {
     console.error("Create Order Error:", err);
+=======
+      message: paymentMethod === 'online' ? 'Order placed and paid successfully' : 'Order placed, pay at counter',
+      orderId: order._id
+    });
+  } catch (err) {
+    console.error(err);
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
     res.status(500).json({ success: false, error: err.message });
   }
 };
@@ -81,6 +107,7 @@ export const listOrders = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 // status updating syrtem
 export const updateStatus = async (req, res) => {
   try {
@@ -120,15 +147,29 @@ export const updateStatus = async (req, res) => {
     }
     // DELIVERED logic
     if (status === "Delivered") {
+=======
+// Update order status (delete)
+export const updateStatus = async (req, res) => {
+  try {
+    const { orderId, status } = req.body;
+
+    if (status === "Delivered") {
+      
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
       await orderModel.findByIdAndDelete(orderId);
       return res.status(200).json({ success: true, alert: "Order delivered and deleted" });
     }
 
     await orderModel.findByIdAndUpdate(orderId, { status });
     res.status(200).json({ success: true, alert: "Status updated" });
+<<<<<<< HEAD
 
   } catch (err) {
     console.error("Error updating status:", err);
+=======
+  } catch (err) {
+    console.error(err);
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
     res.status(500).json({ success: false, alert: err.message });
   }
 };

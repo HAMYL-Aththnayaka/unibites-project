@@ -14,6 +14,7 @@ const PlaceOrder = () => {
   const router = useRouter();
 
   const [data, setData] = useState({
+<<<<<<< HEAD
     firstName: '', 
     lastName: '', 
     email: '', 
@@ -23,6 +24,13 @@ const PlaceOrder = () => {
     phone_number: ''
   });
 
+=======
+    firstName: '', lastName: '', email: '', nearest_town: '',
+    street: '', address: '', phone_number: ''
+  });
+
+  
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
   const subtotal = getTotalCartAmount();
   const deliveryFee = orderType === 'delivery' ? 200 : 0;
   const total = subtotal + deliveryFee;
@@ -31,6 +39,7 @@ const PlaceOrder = () => {
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
+<<<<<<< HEAD
 
 
 const onPlaceOrder = async (addressData: any) => {
@@ -67,12 +76,64 @@ if (response.data.success) {
     Alert.alert("Order Failed", msg);
   }
 };
+=======
+  const onPlaceOrder = async () => {
+    if (!token) {
+      Alert.alert("Error", "Please login first.");
+      router.push('/');
+      return;
+    }
+
+    if (subtotal === 0) {
+      Alert.alert("Error", "Your cart is empty!");
+      return;
+    }
+
+    try {
+      const items = food_list
+        .filter(item => cartItems[item._id] > 0)
+        .map(item => ({
+          name: item.name,
+          price: item.price,
+          quantity: cartItems[item._id],
+        }));
+
+      const orderData = {
+        userId: token,      
+        items,
+        amount: total,
+        address: data,
+        paymentMethod,
+        orderType,
+        payment: paymentMethod === 'online' 
+      };
+
+      const res = await api.post('/api/order/create-order', orderData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (res.data.success) {
+        Alert.alert("Success", res.data.message);
+        router.replace('/(tabs)/orders');
+      } else {
+        Alert.alert("Error", "Something went wrong.");
+      }
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Failed to place order.");
+    }
+  };
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
+<<<<<<< HEAD
           <Text style={styles.backText}>← Back to Cart</Text>
+=======
+            <Text style={styles.backText}>← Back to Cart</Text>
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
         </TouchableOpacity>
 
         <Text style={styles.title}>Order Information</Text>
@@ -125,6 +186,7 @@ if (response.data.success) {
           </View>
 
           <View style={styles.paymentSection}>
+<<<<<<< HEAD
             <Text style={styles.label}>Payment Method:</Text>
             <View style={styles.radioGroup}>
               <TouchableOpacity onPress={() => setPaymentMethod('online')} style={[styles.radioBtn, paymentMethod === 'online' && styles.activeRadio]}>
@@ -138,6 +200,20 @@ if (response.data.success) {
 
           
           <TouchableOpacity style={styles.placeBtn} onPress={() => onPlaceOrder(data)}>
+=======
+             <Text style={styles.label}>Payment Method:</Text>
+             <View style={styles.radioGroup}>
+                <TouchableOpacity onPress={() => setPaymentMethod('online')} style={[styles.radioBtn, paymentMethod === 'online' && styles.activeRadio]}>
+                    <Text style={paymentMethod === 'online' ? styles.whiteText : styles.blackText}>Online</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setPaymentMethod('counter')} style={[styles.radioBtn, paymentMethod === 'counter' && styles.activeRadio]}>
+                    <Text style={paymentMethod === 'counter' ? styles.whiteText : styles.blackText}>Counter</Text>
+                </TouchableOpacity>
+             </View>
+          </View>
+
+          <TouchableOpacity style={styles.placeBtn} onPress={onPlaceOrder}>
+>>>>>>> 8a8578765ba736a6adb877a93e4076ce683b3ed7
             <Text style={styles.placeBtnText}>Place Order</Text>
           </TouchableOpacity>
         </View>
