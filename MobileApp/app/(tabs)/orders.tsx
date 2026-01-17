@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { 
-  View, Text, StyleSheet, FlatList, SafeAreaView, 
-  ActivityIndicator, RefreshControl, Alert 
+import {
+  View, Text, StyleSheet, FlatList, SafeAreaView,
+  ActivityIndicator, RefreshControl, Alert
 } from 'react-native';
 import { StoreContext } from '../../context/StoreContext';
 import api from '../../lib/axios';
@@ -17,8 +17,8 @@ const Orders = () => {
   const fetchOrders = async () => {
     try {
       const res = await api.post(
-        '/api/order/userorders', 
-        {}, 
+        '/api/order/userorders',
+        {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -38,7 +38,7 @@ const Orders = () => {
         }
 
         // Only keep active orders
-        const activeOrders = allFetchedOrders.filter((o: any) => 
+        const activeOrders = allFetchedOrders.filter((o: any) =>
           o.status !== 'Delivered' && o.status !== 'Moved to HH'
         ).reverse();
 
@@ -81,13 +81,13 @@ const Orders = () => {
         </View>
         <View
           style={[
-            styles.statusBadge, 
+            styles.statusBadge,
             { backgroundColor: item.status === 'Delivered' ? '#dcfce7' : '#fff7ed' }
           ]}
         >
           <Text
             style={[
-              styles.statusText, 
+              styles.statusText,
               { color: item.status === 'Delivered' ? '#166534' : '#9a3412' }
             ]}
           >
@@ -137,24 +137,90 @@ const Orders = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAFA' },
-  header: { padding: 24, backgroundColor: 'white' },
-  title: { fontSize: 24, fontWeight: '900', color: '#111827' },
+  container: {
+    flex: 1,
+    backgroundColor: '#FAFAFA'
+  },
+  header: {
+    padding: 24,
+    backgroundColor: 'white'
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: '900',
+    color: '#111827'
+  },
   listContent: { padding: 20 },
-  orderCard: { backgroundColor: 'white', borderRadius: 20, padding: 16, marginBottom: 16, elevation: 2 },
-  cardHeader: { flexDirection: 'row', alignItems: 'center' },
-  iconBox: { width: 48, height: 48, borderRadius: 12, backgroundColor: '#fff7ed', alignItems: 'center', justifyContent: 'center' },
-  headerInfo: { flex: 1, marginLeft: 12 },
-  orderAmount: { fontSize: 16, fontWeight: 'bold', color: '#111827' },
-  itemCount: { fontSize: 12, color: '#6b7280', marginTop: 2 },
-  statusBadge: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 10 },
-  statusText: { fontSize: 12, fontWeight: 'bold' },
-  itemsList: { marginTop: 12, paddingVertical: 12, borderTopWidth: 1, borderTopColor: '#f3f4f6' },
-  itemsText: { fontSize: 14, color: '#4b5563', lineHeight: 20 },
-  cardFooter: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
-  dateText: { fontSize: 12, color: '#9ca3af', marginLeft: 6 },
-  emptyContainer: { alignItems: 'center', marginTop: 100 },
-  emptyText: { marginTop: 10, color: '#9ca3af' }
+  orderCard: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 16,
+    elevation: 2
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  iconBox: {
+    width: 48, height: 48,
+    borderRadius: 12,
+    backgroundColor: '#fff7ed',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  headerInfo: {
+    flex: 1,
+    marginLeft: 12
+  },
+  orderAmount: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#111827'
+  },
+  itemCount: {
+    fontSize: 12,
+    color: '#6b7280',
+    marginTop: 2
+  },
+  statusBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 10
+  },
+  statusText: {
+    fontSize: 12,
+    fontWeight: 'bold'
+  },
+  itemsList: {
+    marginTop: 12,
+    paddingVertical: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#f3f4f6'
+  },
+  itemsText: {
+    fontSize: 14,
+    color: '#4b5563',
+    lineHeight: 20
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8
+  },
+  dateText: {
+    fontSize: 12,
+    color: '#9ca3af',
+    marginLeft: 6
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    marginTop: 100
+  },
+  emptyText: {
+    marginTop: 10,
+    color: '#9ca3af'
+  }
 });
 
 export default Orders;

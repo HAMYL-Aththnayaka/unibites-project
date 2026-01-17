@@ -95,11 +95,32 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 30, justifyContent: 'center', backgroundColor: '#fff' },
-  title: { fontSize: 32, fontWeight: 'bold', color: '#ff6347', marginBottom: 20 },
-  input: { borderBottomWidth: 1, borderColor: '#ccc', marginBottom: 20, padding: 10 },
-  label: { marginBottom: 10, fontWeight: 'bold' },
-  rolePicker: { flexDirection: 'row', marginBottom: 20 },
+  container: {
+    flex: 1,
+    padding: 30,
+    justifyContent: 'center',
+    backgroundColor: '#fff'
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#ff6347',
+    marginBottom: 20
+  },
+  input: {
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+    marginBottom: 20,
+    padding: 10
+  },
+  label: {
+    marginBottom: 10,
+    fontWeight: 'bold'
+  },
+  rolePicker: {
+    flexDirection: 'row',
+    marginBottom: 20
+  },
   roleBtn: {
     flex: 1,
     padding: 10,
@@ -112,7 +133,19 @@ const styles = StyleSheet.create({
   activeRole: { backgroundColor: '#ff6347' },
   whiteText: { color: '#fff' },
   orangeText: { color: '#ff6347' },
-  mainBtn: { backgroundColor: '#ff6347', padding: 15, borderRadius: 10, alignItems: 'center' },
-  btnText: { color: '#fff', fontWeight: 'bold' },
-  toggleText: { marginTop: 20, textAlign: 'center', color: '#666' },
+  mainBtn: {
+    backgroundColor: '#ff6347',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center'
+  },
+  btnText: {
+    color: '#fff',
+    fontWeight: 'bold'
+  },
+  toggleText: {
+    marginTop: 20,
+    textAlign: 'center',
+    color: '#666'
+  },
 });

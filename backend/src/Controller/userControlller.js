@@ -68,7 +68,7 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    if (password.length < 8 || !password.match(/[!@#$%^&*]/)) {
+    if (password.length < 8 || !password.match(/[!@#$%?^&*]/)) {
       return res.status(400).send({ success: false,
          alert: "Password must be at least 8 chars + special character"
          });

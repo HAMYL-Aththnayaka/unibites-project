@@ -61,7 +61,7 @@ const HelpingHand: React.FC = () => {
               <Image source={logo} style={styles.logo} />
             </View>
           </View>
-          
+
           <View style={styles.headerRight}>
             <TouchableOpacity onPress={() => router.push('/cart')} style={styles.cartIcon}>
               <ShoppingBag size={24} color="#f97316" />
@@ -77,7 +77,7 @@ const HelpingHand: React.FC = () => {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.welcomeText}>Good morning!</Text>
+          <Text style={styles.welcomeText}>Hello, Let’s Eat</Text>
           <View style={styles.searchContainer}>
             <Search size={18} color="#9ca3af" style={styles.searchIcon} />
             <TextInput
@@ -126,9 +126,9 @@ const HelpingHand: React.FC = () => {
                         <Text style={styles.ratingText}>4.8</Text>
                       </View>
                     </View>
-                    
+
                     <Text style={styles.foodDescription} numberOfLines={2}>
-                        {item.description}
+                      {item.description}
                     </Text>
 
                     <View style={styles.cardFooter}>
@@ -168,40 +168,154 @@ const HelpingHand: React.FC = () => {
 export default HelpingHand;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAFA' },
-  header: { paddingHorizontal: 24, paddingTop: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  headerRight: { flexDirection: 'row', alignItems: 'center' },
-  cartIcon: { marginRight: 15, position: 'relative' },
-  dot: { position: 'absolute', right: -2, top: -2, width: 8, height: 8, borderRadius: 4, backgroundColor: '#ea580c' },
-  logo: { width: 110, height: 50, resizeMode: 'contain' },
-  locationRow: { flexDirection: 'row', alignItems: 'center' },
-  profileBadge: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#fff7ed', alignItems: 'center', justifyContent: 'center' },
-  section: { paddingHorizontal: 24, marginTop: 24 },
-  welcomeText: { fontSize: 24, fontWeight: '900', color: '#111827' },
+  container: {
+    flex: 1,
+    backgroundColor: '#FAFAFA'
+  },
+  header: {
+    paddingHorizontal: 24,
+    paddingTop: 16, flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  cartIcon: {
+    marginRight: 15,
+    position: 'relative'
+  },
+  dot: {
+    position: 'absolute', right: -2,
+    top: -2, width: 8, height: 8, borderRadius: 4, backgroundColor: '#ea580c'
+  },
+  logo: {
+    width: 110, height: 50,
+    resizeMode: 'contain'
+  },
+  locationRow: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  profileBadge: {
+    width: 44, height: 44,
+    borderRadius: 22, backgroundColor: '#fff7ed',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  section: {
+    paddingHorizontal: 24,
+    marginTop: 24
+  },
+  welcomeText: {
+    fontFamily: 'chalkboard-semi-bold',
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#111827'
+  },
   searchContainer: { marginTop: 16 },
-  searchIcon: { position: 'absolute', left: 16, top: 16, zIndex: 1 },
-  searchInput: { backgroundColor: '#f3f4f6', paddingVertical: 14, paddingLeft: 48, borderRadius: 16 },
-  categoryScroll: { paddingHorizontal: 24, marginTop: 32 },
-  categoryBtn: { paddingHorizontal: 28, paddingVertical: 12, borderRadius: 16, marginRight: 12, backgroundColor: '#fff', borderWidth: 1, borderColor: '#f3f4f6' },
-  categoryBtnActive: { backgroundColor: '#ea580c', borderColor: '#ea580c' },
-  categoryBtnText: { fontWeight: 'bold', color: '#9ca3af' },
+  searchIcon: {
+    position: 'absolute',
+    left: 16, top: 16, zIndex: 1
+  },
+  searchInput: {
+    backgroundColor: '#f3f4f6',
+    paddingVertical: 14, paddingLeft: 48,
+    borderRadius: 16
+  },
+  categoryScroll: {
+    paddingHorizontal: 24,
+    marginTop: 32
+  },
+  categoryBtn: {
+    paddingHorizontal: 28,
+    paddingVertical: 12, borderRadius: 16, marginRight: 12,
+    backgroundColor: '#fff', borderWidth: 1,
+    borderColor: '#f3f4f6'
+  },
+  categoryBtnActive: {
+    backgroundColor: '#ea580c',
+    borderColor: '#ea580c'
+  },
+  categoryBtnText: {
+    fontWeight: 'bold',
+    color: '#9ca3af'
+  },
   categoryBtnTextActive: { color: '#fff' },
-  sectionTitle: { fontSize: 20, fontWeight: '900', marginBottom: 24, color: '#111827' },
-  foodCard: { backgroundColor: '#fff', borderRadius: 32, marginBottom: 32, overflow: 'hidden', elevation: 2 },
-  foodImage: { width: '100%', height: 200 },
+  sectionTitle: {
+    fontSize: 20, fontWeight: '900',
+    marginBottom: 24, color: '#111827'
+  },
+  foodCard: {
+    backgroundColor: '#fff', borderRadius: 32,
+    marginBottom: 32, overflow: 'hidden',
+    elevation: 2
+  },
+  foodImage: {
+    width: '100%',
+    height: 200
+  },
   cardContent: { padding: 20 },
-  cardHeader: { flexDirection: 'row', justifyContent: 'space-between' },
-  foodName: { fontSize: 18, fontWeight: '900', color: '#111827' },
-  canteenName: { fontSize: 12, color: '#9ca3af', fontWeight: 'bold', marginTop: 4 },
-  foodDescription: { fontSize: 14, color: '#666', marginVertical: 10 },
-  ratingBadge: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, borderRadius: 12, backgroundColor: '#f9fafb' },
-  ratingText: { marginLeft: 4, fontWeight: '900' },
-  cardFooter: { marginTop: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  priceText: { fontSize: 22, fontWeight: '900' },
-  addButton: { backgroundColor: '#ea580c', padding: 12, borderRadius: 16 },
-  counterContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#ea580c', borderRadius: 12, paddingHorizontal: 10, paddingVertical: 6 },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  foodName: {
+    fontSize: 18, fontWeight: '900',
+    color: '#111827'
+  },
+  canteenName: {
+    fontSize: 12,
+    color: '#9ca3af',
+    fontWeight: 'bold', marginTop: 4
+  },
+  foodDescription: {
+    fontSize: 14,
+    color: '#666', marginVertical: 10
+  },
+  ratingBadge: {
+    flexDirection: 'row',
+    alignItems: 'center', paddingHorizontal: 10,
+    borderRadius: 12,
+    backgroundColor: '#f9fafb'
+  },
+  ratingText: {
+    marginLeft: 4,
+    fontWeight: '900'
+  },
+  cardFooter: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  priceText: {
+    fontSize: 22,
+    fontWeight: '900'
+  },
+  addButton: {
+    backgroundColor: '#ea580c',
+    padding: 12, borderRadius: 16
+  },
+  counterContainer: {
+    flexDirection: 'row',
+    alignItems: 'center', backgroundColor: '#ea580c',
+    borderRadius: 12, paddingHorizontal: 10,
+    paddingVertical: 6
+  },
   counterButton: { paddingHorizontal: 8 },
-  counterText: { color: 'white', fontWeight: '900', fontSize: 18 },
-  quantityText: { color: 'white', fontWeight: '900', fontSize: 16, marginHorizontal: 6 },
-  emptyText: { textAlign: 'center', color: '#9ca3af' },
+  counterText: {
+    color: 'white',
+    fontWeight: '900', fontSize: 18
+  },
+  quantityText: {
+    color: 'white',
+    fontWeight: '900', fontSize: 16,
+    marginHorizontal: 6
+  },
+  emptyText: {
+    textAlign: 'center',
+    color: '#9ca3af'
+  },
 });

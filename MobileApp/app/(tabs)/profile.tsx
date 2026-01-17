@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User, Mail, LogOut } from 'lucide-react-native';
 import { StoreContext } from '../../context/StoreContext';
-import { jwtDecode } from "jwt-decode"; 
+import { jwtDecode } from "jwt-decode";
 
 const Profile = () => {
   const { token, setToken } = useContext(StoreContext)!;
@@ -24,8 +24,8 @@ const Profile = () => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('token');
-      setToken(''); 
-      router.replace('/'); 
+      setToken('');
+      router.replace('/');
     } catch (error) {
       console.error("Logout Error:", error);
     }
@@ -80,23 +80,95 @@ const Profile = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAFA' },
-  header: { padding: 24, alignItems: 'center' },
-  headerTitle: { fontSize: 20, fontWeight: '900', color: '#111827' },
-  profileCard: { alignItems: 'center', marginBottom: 30 },
+  container: {
+    flex: 1,
+    backgroundColor: '#FAFAFA'
+  },
+  header: {
+    padding: 24,
+    alignItems: 'center'
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: '900',
+    color: '#111827'
+  },
+  profileCard: {
+    alignItems: 'center',
+    marginBottom: 30
+  },
   avatarContainer: { marginBottom: 15 },
-  avatar: { width: 100, height: 100, borderRadius: 50, backgroundColor: '#ea580c', alignItems: 'center', justifyContent: 'center' },
-  avatarText: { color: 'white', fontSize: 40, fontWeight: 'bold' },
-  userName: { fontSize: 24, fontWeight: '900', color: '#111827' },
-  userRole: { fontSize: 14, color: '#9ca3af', fontWeight: 'bold', marginTop: 4 },
-  infoSection: { backgroundColor: 'white', marginHorizontal: 24, borderRadius: 24, padding: 20 },
-  infoRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
-  iconCircle: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#fff7ed', alignItems: 'center', justifyContent: 'center', marginRight: 15 },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#ea580c',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  avatarText: {
+    color: 'white',
+    fontSize: 40,
+    fontWeight: 'bold'
+  },
+  userName: {
+    fontSize: 24,
+    fontWeight: '900',
+    color: '#111827'
+  },
+  userRole: {
+    fontSize: 14,
+    color: '#9ca3af',
+    fontWeight: 'bold',
+    marginTop: 4
+  },
+  infoSection: {
+    backgroundColor: 'white',
+    marginHorizontal: 24,
+    borderRadius: 24,
+    padding: 20
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20
+  },
+  iconCircle: {
+    width: 40,
+    height: 40, borderRadius: 20,
+    backgroundColor: '#fff7ed',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 15
+  },
   infoTextContainer: { flex: 1 },
-  infoLabel: { fontSize: 12, color: '#9ca3af', fontWeight: 'bold' },
-  infoValue: { fontSize: 16, color: '#111827', fontWeight: '600', marginTop: 2 },
-  logoutBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 'auto', marginBottom: 40, marginHorizontal: 24, padding: 18, borderRadius: 16, backgroundColor: '#fef2f2' },
-  logoutText: { color: '#ef4444', fontWeight: '900', fontSize: 16, marginLeft: 10 }
+  infoLabel: {
+    fontSize: 12,
+    color: '#9ca3af',
+    fontWeight: 'bold'
+  },
+  infoValue: {
+    fontSize: 16,
+    color: '#111827',
+    fontWeight: '600',
+    marginTop: 2
+  },
+  logoutBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 'auto',
+    marginBottom: 40,
+    marginHorizontal: 24,
+    padding: 18,
+    borderRadius: 16,
+    backgroundColor: '#fef2f2'
+  },
+  logoutText: {
+    color: '#ef4444',
+    fontWeight: '900',
+    fontSize: 16, marginLeft: 10
+  }
 });
 
 export default Profile;

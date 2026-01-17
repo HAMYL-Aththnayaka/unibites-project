@@ -28,54 +28,54 @@ const PlaceOrder = () => {
 
 
   const onPlaceOrder = async () => {
-  if (!token) {
-    Alert.alert("Error", "Please login first.");
-    router.push('/');
-    return;
-  }
-
-  if (Object.values(cartItems).every(qty => qty === 0)) {
-    Alert.alert("Error", "Your cart is empty!");
-    return;
-  }
-
-  try {
-    const orderItems = food_list
-      .filter(item => cartItems[item._id] > 0)
-      .map(item => ({
-        ...item,
-        quantity: cartItems[item._id],
-        isHelpingHand: item.price === 0,
-      }));
-
-    const isHelpingHandOrder = orderItems.every(item => item.isHelpingHand);
-
-    const orderData = {
-      userId: token,
-      items: orderItems,
-      amount: isHelpingHandOrder ? 0 : subtotal + (orderType === 'delivery' ? 200 : 0),
-      address: data,
-      paymentMethod,
-      orderType,
-      payment: isHelpingHandOrder ? false : paymentMethod === 'online',
-    };
-
-    const res = await api.post('/api/order/create-order', orderData, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-
-    if (res.data.success) {
-      
-      router.replace('/(tabs)/Home');
-      Alert.alert("Success", res.data.message || "Order placed successfully!");
-    } else {
-      Alert.alert("Error", "Something went wrong.");
+    if (!token) {
+      Alert.alert("Error", "Please login first.");
+      router.push('/');
+      return;
     }
-  } catch (err: any) {
-    const msg = err.response?.data?.message || err.message || "Failed to place order";
-    Alert.alert("Error", msg);
-  }
-};
+
+    if (Object.values(cartItems).every(qty => qty === 0)) {
+      Alert.alert("Error", "Your cart is empty!");
+      return;
+    }
+
+    try {
+      const orderItems = food_list
+        .filter(item => cartItems[item._id] > 0)
+        .map(item => ({
+          ...item,
+          quantity: cartItems[item._id],
+          isHelpingHand: item.price === 0,
+        }));
+
+      const isHelpingHandOrder = orderItems.every(item => item.isHelpingHand);
+
+      const orderData = {
+        userId: token,
+        items: orderItems,
+        amount: isHelpingHandOrder ? 0 : subtotal + (orderType === 'delivery' ? 200 : 0),
+        address: data,
+        paymentMethod,
+        orderType,
+        payment: isHelpingHandOrder ? false : paymentMethod === 'online',
+      };
+
+      const res = await api.post('/api/order/create-order', orderData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (res.data.success) {
+
+        router.replace('/(tabs)/Home');
+        Alert.alert("Success", res.data.message || "Order placed successfully!");
+      } else {
+        Alert.alert("Error", "Something went wrong.");
+      }
+    } catch (err: any) {
+      const msg = err.response?.data?.message || err.message || "Failed to place order";
+      Alert.alert("Error", msg);
+    }
+  };
 
 
 
@@ -193,27 +193,94 @@ const PlaceOrder = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAFA' },
+  container: {
+    flex: 1,
+    backgroundColor: '#FAFAFA'
+  },
   scrollContent: { padding: 20 },
   backBtn: { marginBottom: 15 },
-  backText: { color: '#ea580c', fontWeight: 'bold' },
-  title: { fontSize: 24, fontWeight: 'bold', color: '#111827', marginBottom: 20 },
-  label: { fontSize: 16, marginBottom: 10, color: '#555', marginTop: 10 },
-  radioGroup: { flexDirection: 'row', marginBottom: 20 },
-  radioBtn: { flex: 1, padding: 12, borderWidth: 1, borderColor: '#ea580c', borderRadius: 12, alignItems: 'center', marginHorizontal: 5 },
+  backText: {
+    color: '#ea580c',
+    fontWeight: 'bold'
+  },
+  title: {
+    fontSize: 24, fontWeight: 'bold',
+    color: '#111827', marginBottom: 20
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 10,
+    color: '#555',
+    marginTop: 10
+  },
+  radioGroup: {
+    flexDirection: 'row',
+    marginBottom: 20
+  },
+  radioBtn: {
+    flex: 1,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ea580c',
+    borderRadius: 12,
+    alignItems: 'center',
+    marginHorizontal: 5
+  },
   activeRadio: { backgroundColor: '#ea580c' },
-  whiteText: { color: 'white', fontWeight: 'bold' },
+  whiteText: {
+    color: 'white',
+    fontWeight: 'bold'
+  },
   blackText: { color: '#111827' },
-  input: { backgroundColor: 'white', padding: 15, borderRadius: 12, marginBottom: 15, borderWidth: 1, borderColor: '#eee' },
+  input: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 12,
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#eee'
+  },
   row: { flexDirection: 'row' },
-  summaryCard: { backgroundColor: 'white', padding: 20, borderRadius: 24, marginTop: 10, elevation: 3 },
-  summaryTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 15 },
-  summaryRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 },
-  totalBorder: { borderTopWidth: 1, borderTopColor: '#eee', paddingTop: 10, marginTop: 10 },
-  boldText: { fontWeight: 'bold', fontSize: 18 },
+  summaryCard: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 24,
+    marginTop: 10,
+    elevation: 3
+  },
+  summaryTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 15
+  },
+  summaryRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10
+  },
+  totalBorder: {
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+    paddingTop: 10,
+    marginTop: 10
+  },
+  boldText: {
+    fontWeight: 'bold',
+    fontSize: 18
+  },
   paymentSection: { marginTop: 10 },
-  placeBtn: { backgroundColor: '#ea580c', padding: 18, borderRadius: 16, alignItems: 'center', marginTop: 20 },
-  placeBtnText: { color: 'white', fontWeight: 'bold', fontSize: 18 },
+  placeBtn: {
+    backgroundColor: '#ea580c',
+    padding: 18,
+    borderRadius: 16,
+    alignItems: 'center',
+    marginTop: 20
+  },
+  placeBtnText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 18
+  },
   form: { marginTop: 10 },
 });
 

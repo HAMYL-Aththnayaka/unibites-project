@@ -124,10 +124,16 @@ const HelpingHand = () => {
 export default HelpingHand;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAFAFA' },
+  container: {
+    flex: 1,
+    backgroundColor: '#FAFAFA'
+  },
   content: { padding: 20 },
   header: { marginBottom: 24 },
-  title: { fontSize: 28, fontWeight: '900', color: '#030303' },
+  title: {
+    fontSize: 28, fontWeight: '900',
+    color: '#030303'
+  },
   subtitle: { fontSize: 14, color: '#6b7280' },
   card: {
     backgroundColor: '#fff',
@@ -138,8 +144,16 @@ const styles = StyleSheet.create({
   },
   image: { width: '100%', height: 180 },
   cardInfo: { padding: 16 },
-  nameRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  foodName: { fontSize: 20, fontWeight: 'bold', color: '#111827' },
+  nameRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  foodName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#111827'
+  },
   ratingBox: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -148,9 +162,23 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 8
   },
-  ratingText: { fontSize: 12, fontWeight: 'bold', color: '#d97706', marginLeft: 4 },
-  detailRow: { flexDirection: 'row', alignItems: 'center', marginTop: 6, gap: 6 },
-  detailText: { fontSize: 14, color: '#4b5563', fontWeight: '500' },
+  ratingText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#d97706',
+    marginLeft: 4
+  },
+  detailRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 6,
+    gap: 6
+  },
+  detailText: {
+    fontSize: 14,
+    color: '#4b5563',
+    fontWeight: '500'
+  },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -160,15 +188,50 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#f3f4f6'
   },
-  freeText: { fontSize: 22, fontWeight: '900', color: '#10b981' },
-  addBtn: { backgroundColor: '#ea580c', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 12 },
-  addBtnText: { color: '#fff', fontWeight: 'bold' },
-  counter: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#ea580c', borderRadius: 12, padding: 6 },
+  freeText: { fontSize: 22,
+     fontWeight: '900',
+      color: '#10b981' },
+  addBtn: { backgroundColor: '#ea580c', 
+    paddingHorizontal: 20,
+     paddingVertical: 10,
+     borderRadius: 12 },
+  addBtnText: { color: '#fff',
+     fontWeight: 'bold' },
+  counter: { flexDirection: 'row', 
+     alignItems: 'center', 
+     backgroundColor: '#ea580c',
+      borderRadius: 12, padding: 6 },
   countBtn: { paddingHorizontal: 10 },
-  countText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
-  quantityText: { color: '#fff', fontWeight: 'bold', marginHorizontal: 10 },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100 },
-  loginMsg: { color: '#6b7280', marginTop: 10 },
-  noDataTitle: { fontSize: 20, fontWeight: 'bold', marginTop: 15, color: '#111827' },
-  noDataText: { textAlign: 'center', marginTop: 10, color: '#6b7280', lineHeight: 20 }
+  countText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold'
+  },
+  quantityText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    marginHorizontal: 10
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 100
+  },
+  loginMsg: {
+    color: '#6b7280',
+    marginTop: 10
+  },
+  noDataTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 15,
+    color: '#111827'
+  },
+  noDataText: {
+    textAlign: 'center',
+    marginTop: 10,
+    color: '#6b7280',
+    lineHeight: 20
+  }
 });
