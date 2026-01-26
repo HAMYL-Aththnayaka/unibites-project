@@ -1,0 +1,15 @@
+[
+  {
+    "items": [
+      {
+        "name": "Chicken Rice",
+        "quantity": 1,
+        "price": 450
+      }
+    ],
+    "amount": 450,
+    "address": "University Hostel",
+    "paymentMethod": "cash",
+    "status": "Pending"
+  }
+]
