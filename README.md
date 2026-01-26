@@ -109,8 +109,6 @@ UniBites is a full-stack food ordering platform designed for university students
 
             
 
-# Sample Output :
-<img width="1900" height="1008" alt="Project" src="https://github.com/user-attachments/assets/e01ea097-2a58-4b79-9449-2bd8beb4c449" />
 
 
 # Connect and Resources
