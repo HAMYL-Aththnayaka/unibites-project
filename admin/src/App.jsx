@@ -19,8 +19,13 @@ const App = () => {
       <ToastContainer/>
       <Navbar />
       <hr />
+<<<<<<< HEAD
 
       <div className="app-content" style={{ display: 'flex', gap: '20px', padding: '20px', backgroundColor: '#f9f9f9' }}>
+=======
+      
+      <div className="app-content">
+>>>>>>> origin/master
         <Sidebar/>
         <Routes >
           <Route path='/add' element={<Add />}/>

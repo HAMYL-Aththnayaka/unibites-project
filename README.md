@@ -7,6 +7,9 @@
 UniBites is a web application designed to simplify food ordering and management for university students and staff. It provides an intuitive interface to browse menus, place orders, and manage canteen operations efficiently.
 Lets Leap in to the future
 
+UniBites is a full-stack food ordering platform designed for university students and staff. It streamlines food browsing, ordering, and canteen management — making daily canteen operations smooth, efficient, and modern.
+
+
 ### Features
 - Browse the daily menu with images and prices  
 - Add items to cart and place orders quickly  
@@ -18,14 +21,67 @@ Lets Leap in to the future
 ### Tech Stack
 - **Frontend:** HTML, CSS, JavaScript, React.js  
 - **Backend:** Node.js, Express.js  
+<<<<<<< HEAD
 - **Database:** MongoDB  
 
 ### Installation
+=======
+- **Database:** MongoDB
+- **Mobile App:** React Native
+
+---
+
+## Project Modules
+
+### Frontend
+
+* Built with React.js
+* Interactive UI to browse menus, add to cart, and track orders
+* Responsive design optimized for both desktops and mobile browsers
+* Communicates with backend REST APIs
+
+* Directory: frontend
+
+
+### Backend
+
+* Node.js + Express.js REST API
+* Routes for users, orders, menus, authentication, etc
+* Connects to MongoDB for data storage
+* Handles business logic, order management, and data validation
+
+* Directory: backend 
+
+
+### Mobile App
+
+* Included under the MobileApp directory
+* Designed to enhance usability on mobile devices
+* Likely built using React Native or a web-to-mobile wrapper
+* Integrates with backend for real-time order placement and status
+
+* Directory: MobileApp
+
+
+### Admin Panel
+
+* Built for admin of the app
+* Provides full control over order management & menu listings
+* Supports real-time order acceptance, status updates, and completion tracking
+* Allows adding, editing, and removing menu items
+* Displays order queue, preparation flow
+
+* Directory: Admin
+ ---
+
+## Installation & Setup
+>>>>>>> origin/master
 1. Clone the repository:  
    ```bash
    git clone https://github.com/HAMYL-Aththnayaka/unibites-project.git ```
    
 2. Install dependencies:
+<<<<<<< HEAD
   npm install
 3. Start the server:
  
@@ -44,3 +100,49 @@ Lets Leap in to the future
 
 # Connect with Me
 https://github.com/HAMYL-Aththnayaka
+=======
+     npm install
+3. Start the server:
+     npm run start
+         or
+     npm run dev 
+5. Open the app in your browser at http://localhost:xxxx
+
+
+
+## Workflow & Architecture
+
++ User loads frontend app
++ Frontend communicates with backend APIs
++ Backend handles requests, stores data in MongoDB
++ Admin dashboard manages menus and orders
+  
+
+## Future Enhancements
+
+- Payment integration
+- Real-time order tracking
+- User ratings and feedback for menu items
+
+
+## Team Members
+    H.A.M.Y.L.Aththanayaka  
+    
+    R.C.Vidanagamage   
+    
+    R.Sharanjana  
+    
+    D.D.I.Wijewardhana  
+    
+    W.D.Chandrasiri  
+    
+    K.N.Ukwaththage  
+
+            
+
+
+
+# Connect and Resources
+GitHub Repo: https://github.com/HAMYL-Aththnayaka/unibites-project  
+Libraries and Tools: React, Express, MongoDB, Node.js  
+>>>>>>> origin/master
