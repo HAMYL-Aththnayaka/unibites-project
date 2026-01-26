@@ -1,3 +1,9 @@
+/**
+ * Component: Add
+ * Purpose: Handles the submission of new food items to the database.
+ * Key Features: Image preview, dynamic form state, and multipart/form-data submission.
+ */
+
 import React, { useEffect, useState } from 'react';
 import './Add.css';
 import api from '../../lib/axios'
@@ -5,8 +11,11 @@ import { assets } from '../../assets/assets';
 import { toast } from 'react-toastify';
 
 const Add = () => { 
- 
+  
+  // State for the image file selected via the file input
   const [image, setImage] = useState(null);
+
+  // Unified state object for all text-based and dropdown form inputs
   const [data, setData] = useState({
     name: '',
     description: '',
@@ -15,59 +24,81 @@ const Add = () => {
     canteen: 'Applied-Canteen'
   });
 
+  /**
+   * Handler: onChangeHandler
+   * Updates state based on input changes. Distinguishes between 
+   * file inputs (for images) and standard text/select inputs.
+   */
   const onChangeHandler = (e) => {
     const { name, value, files } = e.target;
-    if (files) setImage(files[0]);
-    else setData(prev => ({ ...prev, [name]: value }));
+    if (files) {
+      // Store the actual file object for the image
+      setImage(files[0]);
+    } else {
+      // Dynamically update the data object based on the input's 'name' attribute
+      setData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
-  const onSubmitHandler =async (event)=>{
-    event.preventDefault();
+  /**
+   * Handler: onSubmitHandler
+   * Packages form state into FormData and sends it to the server.
+   */
+  const onSubmitHandler = async (event) => {
+    event.preventDefault(); // Prevents page reload on form submission
+
+    // FormData is required to send files (images) alongside text data
     const formData = new FormData();
-    formData.append('name',data.name);
-    formData.append('description',data.description);
-    formData.append('price',Number(data.price));
-    formData.append('catagory',data.catagory);
-    formData.append('canteen',data.canteen);
-    formData.append('image',image);
+    formData.append('name', data.name);
+    formData.append('description', data.description);
+    formData.append('price', Number(data.price)); // Ensures price is sent as a number
+    formData.append('catagory', data.catagory);
+    formData.append('canteen', data.canteen);
+    formData.append('image', image);
 
-    const response = await api.post('/foods/add',formData)
+    try {
+      const response = await api.post('/foods/add', formData);
 
-    if(response.data.success){
-          setData({
-                      name: '',
-                      description: '',
-                      price: '',
-                      catagory: '',
-                      canteen: 'Applied-Canteen'
-          })
-          setImage(false)
-          toast.success(" Food Added Successfuly !!!", {
-  style: {
-    background: "black",
-    color: "white",
-    fontWeight: "bold",
-    fontSize: "16px",
-  },
-  progressStyle: {
-    background: "lime",
-  },
-});
+      if (response.data.success) {
+        // Reset the form state upon a successful database entry
+        setData({
+          name: '',
+          description: '',
+          price: '',
+          catagory: '',
+          canteen: 'Applied-Canteen'
+        });
+        setImage(false); // Clear the image preview
 
-    }else{
-      toast.error("Something Went Wrong Food Was Not Adedd !!!")
+        // Success notification with customized styling
+        toast.success("Food Added Successfully !!!", {
+          style: {
+            background: "black",
+            color: "white",
+            fontWeight: "bold",
+            fontSize: "16px",
+          },
+          progressStyle: {
+            background: "lime",
+          },
+        });
+      } else {
+        toast.error("Something Went Wrong! Food Was Not Added.");
+      }
+    } catch (error) {
+      toast.error("Network Error: Could not connect to the server.");
     }
-    
-  }
+  };
 
   return (
     <div className="add">
       <form className="form" onSubmit={onSubmitHandler} >
 
-       
+        {/* Image Upload: label is linked to a hidden input for a better UI experience */}
         <div className="add-img-upload flex-col">
           <p>Upload Image</p>
           <label htmlFor="image">
+            {/* URL.createObjectURL creates a temporary local path to preview the selected image */}
             <img
               src={image ? URL.createObjectURL(image) : assets.upload_area}
               alt="Upload area"
@@ -76,7 +107,6 @@ const Add = () => {
           <input type="file" id="image" onChange={onChangeHandler} hidden required />
         </div>
 
-       
         <div className="add-product-name flex-col">
           <p>Product Name</p>
           <input
@@ -89,7 +119,6 @@ const Add = () => {
           />
         </div>
 
-       
         <div className="add-product-description flex-col">
           <p>Product Description</p>
           <textarea
@@ -102,11 +131,12 @@ const Add = () => {
           />
         </div>
 
-        
+        {/* Category and Price grouped for horizontal layout via CSS */}
         <div className="add-catagory-price">
           <div className="add-catagory flex-col">
             <p>Product Category</p>
-            <select name="catagory" value={data.catagory} onChange={onChangeHandler}>
+            <select name="catagory" value={data.catagory} onChange={onChangeHandler} required>
+              <option value="" disabled>Select Category</option>
               <option value="Salad">Salad</option>
               <option value="Rolls">Rolls</option>
               <option value="Dessert">Dessert</option>
@@ -131,7 +161,6 @@ const Add = () => {
           </div>
         </div>
 
-
         <div className="Canteen-select flex-col">
           <p>Please Select Which Canteen</p>
           <select name="canteen" value={data.canteen} onChange={onChangeHandler}>
@@ -142,7 +171,6 @@ const Add = () => {
           </select>
         </div>
 
-      
         <button type="submit" className="add-btn">ADD</button>
       </form>
     </div>
