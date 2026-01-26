@@ -1,5 +1,5 @@
 
-## UniBites - University Canteen Ordering System
+## UniBites - Digital Canteen System
 
 
 UniBites is a full-stack food ordering platform designed for university students and staff. It streamlines food browsing, ordering, and canteen management — making daily canteen operations smooth, efficient, and modern.
