@@ -85,7 +85,13 @@ UniBites is a full-stack food ordering platform designed for university students
 + Frontend communicates with backend APIs
 + Backend handles requests, stores data in MongoDB
 + Admin dashboard manages menus and orders
-  
+
+## Web , Mobile Interfaces & Database
+
+### Database
+
+![Database](https://github.com/user-attachments/assets/caf8f7c3-6495-459b-9b51-c0eb09f75604)    
+
 
 ## Future Enhancements
 
