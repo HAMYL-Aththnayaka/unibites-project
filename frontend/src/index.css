@@ -1,27 +1,38 @@
+/* Import Google Fonts: Bitter and Outfit */
 @import url('https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap');
-*{
+
+/* Reset default padding, margin, and set box-sizing for all elements */
+* {
   padding: 0;
   margin: 0;
-  box-sizing: 'border-box';
-  font-family: Bitter; 
-  scroll-behavior: smooth;
+  box-sizing: 'border-box'; /* Note: should be without quotes for correct effect */
+  font-family: Bitter;      /* Use Bitter font by default */
+  scroll-behavior: smooth;  /* Smooth scrolling for anchor links */
 }
-body{
+
+/* Ensure body takes full viewport height */
+body {
   min-height: 100vh;
 }
-a{
-  text-decoration:none;
+
+/* Remove underline and inherit color for all links */
+a {
+  text-decoration: none;
   color: inherit;
 }
-.app{
+
+
+.app {
   width: 80%;
   margin: auto;
 }
+
+/* Fade-in animation from transparent to opaque */
 @keyframes fadeIn {
-  0%{
+  0% {
     opacity: 0;
   }
-  100%{
+  100% {
     opacity: 1;
   }
 }

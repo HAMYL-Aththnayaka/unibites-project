@@ -15,29 +15,30 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
-  const [showLogin, setShowLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false); // Controls login popup visibility
 
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-      />
+      <ToastContainer position="top-right" autoClose={3000} /> {/* Notification container */}
 
-      {showLogin ? <LogginPopup setShowLogin={setShowLogin} /> : <></>}
+      {showLogin && <LogginPopup setShowLogin={setShowLogin} />} {/* Login popup */}
+
       <div className="app">
-        <Navbar setShowLogin={setShowLogin} />
+        <Navbar setShowLogin={setShowLogin} /> {/* Navbar with login toggle */}
+
         <Routes>
-          <Route path={'/'} element={<Home />} />
-          <Route path={'/cart'} element={<Cart />} />
-          <Route path={'/ContactAdmin'} element={<ContactAdmin />} />
-          <Route path={'/order'} element={<PlaceOrder />} />
-          <Route path={'/help'} element={<Help />} />
-          <Route path={'/verify'} element={<Verify />} />
-          <Route path={'/myorders'} element={<Myorders />} />
+          {/* Define routes for all pages */}
+          <Route path="/" element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/ContactAdmin" element={<ContactAdmin />} />
+          <Route path="/order" element={<PlaceOrder />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/verify" element={<Verify />} />
+          <Route path="/myorders" element={<Myorders />} />
         </Routes>
       </div>
-      <Footer />
+
+      <Footer /> {/* Footer component */}
     </>
   );
 };
