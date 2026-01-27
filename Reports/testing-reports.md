@@ -84,19 +84,12 @@ This testing report presents the results of manual testing conducted on the Unib
 
 ---
 
-## 9. Admin Login Module
 
-| Test Case ID | Test Scenario | Pre-Condition | Test Steps | Test Data | Expected Result | Post Condition | Actual Result | Status |
-|-------------|--------------|--------------|-----------|----------|----------------|---------------|--------------|--------|
-| TC_ADMIN_001 | Admin login with valid credentials | Admin account exists | 1. Enter admin username<br>2. Enter password<br>3. Click Login<br>4. View dashboard | Valid admin credentials | Dashboard loaded successfully | Admin session active | Dashboard displayed | PASS |
-
----
-
-## 10. Issues Identified
+## 9. Issues Identified
 - Minor UI alignment issues in the admin dashboard  
 - Notification system requires further enhancement  
 
 ---
 
-## 11. Conclusion
+## 10. Conclusion
 The Unibites – Digital Canteen System was successfully tested using manual testing techniques. All core functionalities performed as expected. Minor UI and notification improvements are recommended before final deployment.
