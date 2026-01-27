@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Student One",
+    "registration": "2021/ICT/01",
+    "faculty": "Technology",
+    "reason": "Financial difficulty",
+    "recomendation": "Canteen support",
+    "scholership": true
+  }
+]

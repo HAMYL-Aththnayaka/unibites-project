@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Chicken Rice",
+    "description": "Spicy chicken rice",
+    "price": 450,
+    "catagory": "Salad",
+    "canteen": "Main Canteen",
+    "image": "chicken_rice.jpg"
+  },
+  {
+    "name": "Veg Kottu",
+    "description": "Vegetable kottu roti",
+    "price": 300,
+    "catagory": "Drinks",
+    "canteen": "Hostel Canteen",
+    "image": "veg_kottu.jpg"
+  }
+]

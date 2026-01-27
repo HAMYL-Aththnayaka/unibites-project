@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Free Rice Packet",
+    "description": "Donated food",
+    "price": 0,
+    "catagory": "Helping Hand",
+    "canteen": "Main Canteen",
+    "image": "free_rice.jpg"
+  }
+]

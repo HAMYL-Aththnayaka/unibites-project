@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Ranuja Chinthal",
+    "email": "ranuja@student.com",
+    "password": "Student@123",
+    "role": "student",
+    "cartData": {}
+  },
+  {
+    "name": "Admin User",
+    "email": "admin@unibites.com",
+    "password": "Admin@123",
+    "role": "admin",
+    "cartData": {}
+  }
+]
