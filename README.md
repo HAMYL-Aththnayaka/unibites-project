@@ -118,7 +118,12 @@ UniBites is a full-stack food ordering platform designed for university students
 ### Web Interface
 
 <img width="1882" height="905" alt="image" src="https://github.com/user-attachments/assets/0607f1e0-bf1e-4b10-b020-75f68ab2ec40" />  
-<img width="1884" height="591" alt="image" src="https://github.com/user-attachments/assets/fce24945-8196-4dc0-8e07-8b496ef5381a" />  
+<img width="1892" height="640" alt="image" src="https://github.com/user-attachments/assets/0d626791-cc68-4934-93dd-928b8a6f3b6d" />  
+<img width="1888" height="896" alt="image" src="https://github.com/user-attachments/assets/46d746e9-02f6-4c61-875e-7bab47b7ea7b" />  
+<img width="1887" height="903" alt="image" src="https://github.com/user-attachments/assets/de78e171-a0e8-42fa-9836-186ca620fd18" />  
+<img width="1887" height="909" alt="image" src="https://github.com/user-attachments/assets/00b26626-9d29-4c23-872f-e7c11f1818f6" />  
+<img width="1890" height="859" alt="image" src="https://github.com/user-attachments/assets/30a43ed1-a855-4d19-a6c1-d8b86f0460f9" />  
+
 
 
 ## Future Enhancements
