@@ -1,32 +1,45 @@
+/* 1. External Font Imports */
+/* Importing 'Outfit' for modern UI and 'Bitter' for potential serif accents */
 @import url('https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap');
 
-*{
+/* 2. Global Reset */
+* {
   padding: 0;
   margin: 0;
-  box-sizing: border-box;
-  font-family: outfit;
-}
-body{
-  min-height: 100hv;
-  background-color: #fcfcfc;
-}
-a{
-  text-decoration: none;
-  color: inherit;
+  box-sizing: border-box; /* Ensures padding doesn't increase element width */
+  font-family: 'Outfit', sans-serif;
 }
 
-hr{
-  border:none;
+/* 3. Base Styles */
+body {
+  /* Corrected Typo: 'hv' changed to 'vh' (Viewport Height) */
+  min-height: 100vh; 
+  background-color: #fcfcfc;
+  color: #333; /* Adding a default soft black for better readability */
+}
+
+/* 4. Link & Horizontal Rule Styling */
+a {
+  text-decoration: none;
+  color: inherit; /* Links will take the color of their parent text */
+}
+
+hr {
+  border: none;
   height: 1px;
   background-color: #a9a9a9;
 }
 
-.app-content{
+/* 5. Layout Utilities (Flexbox) */
+
+/* Main layout wrapper to align Sidebar and Content side-by-side */
+.app-content {
   display: flex;
 }
 
-.flex-col{
+/* Utility class for vertical stacking with consistent spacing */
+.flex-col {
   display: flex;
   flex-direction: column;
-  gap:10px;
+  gap: 10px;
 }

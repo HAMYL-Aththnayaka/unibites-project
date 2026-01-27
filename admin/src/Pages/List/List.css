@@ -1,5 +1,7 @@
+/* --- Grid-based table layout for structured data listing --- */
 .list-table-format {
     display: grid;
+    /* Defines specific widths for 5 columns using fractional units (fr) */
     grid-template-columns: 0.5fr 2fr 1fr 1fr 0.5fr;
     align-items: center;
     gap: 10px; 
@@ -8,6 +10,8 @@
     font-size: 13px;
     box-sizing: border-box;
 }
+
+/* --- Styling for inline filter/status options --- */
 .option {
     margin-bottom: 20px;
     display: flex;
@@ -22,6 +26,7 @@
     margin: 0;
 }
 
+/* --- Interactive dropdown (select) styling with transitions --- */
 .option select {
     padding: 6px 10px;
     border: 1px solid #cacaca;
@@ -29,36 +34,45 @@
     background-color: #fff;
     font-size: 14px;
     cursor: pointer;
+    /* Smooth transition for interaction feedback */
     transition: border 0.2s, box-shadow 0.2s;
 }
 
+/* Visual feedback on hover */
 .option select:hover {
     border-color: #888;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
+/* Visual feedback on focus */
 .option select:focus {
     outline: none;
     border-color: #555;
     box-shadow: 0 0 5px rgba(0,0,0,0.2);
 }
 
+/* ---Specific styling for the table header/title row --- */
 .list-table-format.title {
     background-color: #eedfce;
 }
 
+/* ---  Specific image handling for list thumbnails --- */
 .list-table-format img {
     width: 50px;
     height: 50px;
+    /* Ensures image isn't stretched, keeps aspect ratio */
     object-fit: cover;
     border-radius: 5px;
 }
+
 .cursor{
     cursor: pointer;
 }
 
+/* --- Advanced Media Queries with column management --- */
 @media (max-width: 768px) {
     .list-table-format {
+        /* Reduces 5 columns down to 3 for tablet view */
         grid-template-columns: 1fr 2fr 1fr; 
         gap: 8px;
         font-size: 12px;
@@ -67,13 +81,16 @@
         width: 40px;
         height: 40px;
     }
+    /* Completely hides the 5th column (usually 'Action' or 'Remove') on small tablets */
     .list-table-format p:nth-child(5) { 
         display: none;
     }
 }
 
+/* --- Extreme mobile breakpoint (under 480px) --- */
 @media (max-width: 480px) {
     .list-table-format {
+        /* Changes to a single-column stack for very narrow screens */
         grid-template-columns: 1fr; 
         gap: 5px;
         font-size: 11px;

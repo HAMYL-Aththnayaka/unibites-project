@@ -2,6 +2,11 @@
 ## UniBites - Digital Canteen System
 
 
+
+
+UniBites is a web application designed to simplify food ordering and management for university students and staff. It provides an intuitive interface to browse menus, place orders, and manage canteen operations efficiently.
+Lets Leap in to the future
+
 UniBites is a full-stack food ordering platform designed for university students and staff. It streamlines food browsing, ordering, and canteen management — making daily canteen operations smooth, efficient, and modern.
 
 
@@ -16,6 +21,11 @@ UniBites is a full-stack food ordering platform designed for university students
 ### Tech Stack
 - **Frontend:** HTML, CSS, JavaScript, React.js  
 - **Backend:** Node.js, Express.js  
+<<<<<<< HEAD
+- **Database:** MongoDB  
+
+### Installation
+=======
 - **Database:** MongoDB
 - **Mobile App:** React Native
 
@@ -65,11 +75,32 @@ UniBites is a full-stack food ordering platform designed for university students
  ---
 
 ## Installation & Setup
+>>>>>>> origin/master
 1. Clone the repository:  
    ```bash
    git clone https://github.com/HAMYL-Aththnayaka/unibites-project.git ```
    
 2. Install dependencies:
+<<<<<<< HEAD
+  npm install
+3. Start the server:
+ 
+4. Open the app in your browser at http://localhost:xxxx
+
+# Future Enhancements
+
+- Payment integration
+
+- Real-time order tracking
+
+- User ratings and feedback for menu items
+# Sample Output :
+<img width="1900" height="1008" alt="Project" src="https://github.com/user-attachments/assets/e01ea097-2a58-4b79-9449-2bd8beb4c449" />
+
+
+# Connect with Me
+https://github.com/HAMYL-Aththnayaka
+=======
      npm install
 3. Start the server:
      npm run start
@@ -125,3 +156,4 @@ UniBites is a full-stack food ordering platform designed for university students
 # Connect and Resources
 GitHub Repo: https://github.com/HAMYL-Aththnayaka/unibites-project  
 Libraries and Tools: React, Express, MongoDB, Node.js  
+>>>>>>> origin/master

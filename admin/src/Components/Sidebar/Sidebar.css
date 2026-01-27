@@ -1,38 +1,58 @@
-.sidebar{
-    width: 18%;
-    min-height: 100vh;
+/*
+ * Sidebar Navigation Styles
+ * Layout: Fixed-width vertical column that converts to an icon-only bar on tablets.
+ */
+
+.sidebar {
+    width: 18%; /* Consistent width for the left navigation area */
+    min-height: 100vh; /* Ensures the border extends to the bottom of the screen */
     border: 1.5px solid #a9a9a9;
     border-top: 0;
-    font-size: max(1vw,10px);
+    /* Uses max() to ensure font doesn't get smaller than 10px on tiny screens */
+    font-size: max(1vw, 10px); 
 }
-.sidebar-options{
-padding-top: 50px;
-padding-left: 20%;
-display: flex;
-flex-direction: column;
-gap:20px;
+
+.sidebar-options {
+    padding-top: 50px;
+    padding-left: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
-.sidebar-option{
+
+.sidebar-option {
     display: flex;
     align-items: center;
     gap: 12px;
     border: 1px solid #a9a9a9;
-    border-right: 0;
+    border-right: 0; /* Creates a seamless 'tab' effect against the main content */
     padding: 8px 10px;
     border-radius: 3px 0px 0px 3px;
-    cursor:pointer;
-}
- .imgg{
-    height: 30px;
- }
-
-.sidebar-option.active{
-    background-color:#eaf0b4;
-    border-color: tomato;
+    cursor: pointer;
 }
 
-@media(max-width:900px){
-     .sidebar-option p{
-        display: none;
-     }
+.imgg {
+    height: 30px; /* Standardizes icon size across all nav items */
+}
+
+/* --- Active State: Highlights the currently selected page --- */
+.sidebar-option.active {
+    background-color: #eaf0b4; 
+    border-color: tomato; 
+}
+
+/* --- Responsive Layout: Tablet/Small Screen Optimization --- */
+@media(max-width: 900px) {
+    .sidebar {
+        width: 10%; /* Shrinks sidebar width */
+    }
+    
+    .sidebar-option p {
+        display: none; /* Hides text labels, showing only icons */
+    }
+    
+    .sidebar-options {
+        padding-left: 0;
+        align-items: center; /* Centers icons in the slim bar */
+    }
 }

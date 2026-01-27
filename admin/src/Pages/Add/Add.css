@@ -1,30 +1,44 @@
+/**
+ * Styles for the Add Product Form
+ * Layout: Vertical stack for form groups with a responsive side-by-side section for category/price.
+ */
+
 .add {
-    width: 70%;
+    width: 70%; /* Centers the form and prevents it from being too wide */
     margin: 50px auto 0 auto;
     color: #5e5b5b;
     font-size: 16px;
 }
+
+/* Form Container Logic */
 .add form {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    flex-direction: column; /* Stacks input groups vertically */
+    gap: 20px; /* Consistent spacing between different form sections */
 }
+
+/* Reusable Column Class for Labels and Inputs */
 .flex-col {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
+
+/* Image Upload Placeholder Styling */
 .add-img-upload {
     width: 100%;
     max-width: 200px;
 }
+
 .add-img-upload img {
     width: 100%;
     cursor: pointer;
-    border: 2px dashed #ccc;
+    border: 2px dashed #ccc; /* Visual cue that this area is interactive/droppable */
     border-radius: 5px;
     padding: 10px;
 }
+
+/* Input, Select, and Textarea Global Styling */
 .add-product-name input,
 .add-product-description textarea,
 .add-catagory select,
@@ -32,41 +46,43 @@
 .Canteen-select select {
     width: 100%;
     padding: 8px 10px;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Ensures padding doesn't affect the defined width */
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
 }
-.add-product-name,
-.add-product-description {
-    width: 100%;
-}
+
+/* Category and Price Layout */
 .add-catagory-price {
     display: flex;
     gap: 20px;
 }
+
 .add-catagory-price > div {
-    flex: 1; 
+    flex: 1; /* Ensures Category and Price take up equal horizontal space */
 }
-.Canteen-select select {
-    max-width: 300px;
-}
+
+/* Submit Button Styling */
 .add-btn {
     padding: 10px 16px;
     margin-bottom: 10px;
     font-size: 16px;
     border: none;
     border-radius: 4px;
-    background-color: #eb7e35;
+    background-color: #eb7e35; /* Primary brand color (Orange) */
     color: white;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s; /* Smooth hover effect */
 }
+
 .add-btn:hover {
-    background-color: #d66530;
+    background-color: #d66530; /* Darker shade for feedback */
 }
+
+/* Mobile Responsiveness */
 @media screen and (max-width: 768px) {
     .add-catagory-price {
-        flex-direction: column;
+        /* On small screens, stack Category and Price instead of side-by-side */
+        flex-direction: column; 
     }
 }

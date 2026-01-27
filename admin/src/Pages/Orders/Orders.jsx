@@ -1,3 +1,9 @@
+/**
+ * Component: Orders
+ * Purpose: Manages customer orders and handles redistribution of items to the 
+ * Helping Hand (HH) program if food is not delivered.
+ */
+
 import React, { useState, useEffect } from 'react';
 import './Orders.css';
 import { assets } from '../../assets/assets';
@@ -6,17 +12,23 @@ import { toast } from 'react-toastify';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
+  // Local state to track which canteen is selected for HH transfer for each specific order
   const [selectedCanteens, setSelectedCanteens] = useState({}); 
 
+  /**
+   * Fetches all orders and filters out completed or already moved ones.
+   */
   const fetchAllOrders = async () => {
     try {
       const response = await api.get('/order/list');
       if (response.data.success) {
+        // Only show orders that are still being processed
         const activeOrders = response.data.data.filter(
           order => order.status !== 'Delivered' && order.status !== 'Moved to HH'
         );
         setOrders(activeOrders);
 
+        // Initialize the canteen selection dropdown for each order
         const defaultCanteens = {};
         activeOrders.forEach(order => {
           defaultCanteens[order._id] = "Applied-Canteen"; 
@@ -28,15 +40,22 @@ const Orders = () => {
     }
   };
 
+  /**
+   * Complex Logic: processHHTransfer
+   * 1. Iterates through all items in an order.
+   * 2. Posts each item to the Helping Hand database as a new 'free' food item.
+   * 3. Updates the original order status to archive it.
+   */
   const processHHTransfer = async (order) => {
     try {
       const selectedCanteen = selectedCanteens[order._id] || "Applied-Canteen";
 
+      // Create an array of API calls for every item in the order
       const promises = order.items.map(item => {
         const hhData = {
           name: item.name || "Donated Food",
           description: `Redistributed from order: ${order._id}`,
-          price: 0,
+          price: 0, // Helping Hand items are always free
           catagory: item.catagory || "General",
           canteen: selectedCanteen, 
           image: item.image || item.img || "default.png"
@@ -44,8 +63,10 @@ const Orders = () => {
         return api.post('/HelpingHand/foods/add', hhData);
       });
 
+      // Execute all item transfers simultaneously
       await Promise.all(promises);
 
+      // Finalize by updating the order status in the backend
       const response = await api.post('/order/status', {
         orderId: order._id,
         status: 'Add to HH',
@@ -54,15 +75,20 @@ const Orders = () => {
 
       if (response.data.success) {
         toast.success("Items added to HH and Order archived.");
+        // Remove the processed order from the visible list
         setOrders(prev => prev.filter(o => o._id !== order._id));
       }
     } catch (err) {
       const errorMsg = err.response?.data?.message || err.message;
-      console.error("Transfer failed. Order was NOT deleted. Error:", errorMsg);
+      console.error("Transfer failed:", errorMsg);
       toast.error(`Failed to add food to HH: ${errorMsg}`);
     }
   };
 
+  /**
+   * Handles status changes (Processing, Delivery, etc.)
+   * Intercepts "Add to HH" to trigger the redistribution logic.
+   */
   const statusHandler = async (event, order) => {
     const newStatus = event.target.value;
 
@@ -79,6 +105,7 @@ const Orders = () => {
 
       if (response.data.success) {
         toast.success(response.data.alert);
+        // If delivered, remove from active list; otherwise, refresh list data
         if (newStatus === 'Delivered') {
           setOrders(prev => prev.filter(o => o._id !== order._id));
         } else {
@@ -90,6 +117,7 @@ const Orders = () => {
     }
   };
 
+  // Updates local state when a different canteen is picked for an order
   const canteenChangeHandler = (orderId, value) => {
     setSelectedCanteens(prev => ({ ...prev, [orderId]: value }));
   };
@@ -109,6 +137,7 @@ const Orders = () => {
             <div key={index} className='order-item'>
               <img src={assets.parcel_icon} alt="Parcel" />
               <div>
+                {/* Displaying comma-separated items and quantities */}
                 <p className='order-item-food'>
                   {order.items.map((item, i) => (
                     <span key={i}>
@@ -123,7 +152,7 @@ const Orders = () => {
               <p>Items: {order.items.length}</p>
               <p>LKR {order.amount}</p>
               
-              {/* Canteen Selector */}
+              {/* Dropdown to select destination canteen for HH redistribution */}
               <select 
                 value={selectedCanteens[order._id] || "Applied-Canteen"}
                 onChange={(e) => canteenChangeHandler(order._id, e.target.value)}
@@ -134,6 +163,7 @@ const Orders = () => {
                 <option value="Boys-Hostel-Canteen">Boys-Hostel-Canteen</option>
               </select>
 
+              {/* Standard Order Status Control */}
               <select onChange={(event) => statusHandler(event, order)} value={order.status}>
                 <option value="Food Processing">Food Processing</option>
                 <option value="Out for Delivery">Out for Delivery</option>
