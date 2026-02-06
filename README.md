@@ -24,14 +24,6 @@ UniBites is a full-stack food ordering platform designed for university students
 - **Database:** MongoDB 
 - **Mobile App:** React Native
 
-## Instalation
-
-1. Clone Repository
-   git clone https://github.com/HAMYL-Aththnayaka/unibites-project.git
-2. Install Dependencies
-   npm install
-3. 
-
 
 ## Project Modules
 
