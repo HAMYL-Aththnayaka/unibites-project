@@ -114,14 +114,5 @@ if (!result) throw new Error("Deletion failed: Order ID not found");
 
 ---
 
-## 6. Recommended Future Tests
-1. **Concurrency Test:** Ensure two admins don’t add the same order simultaneously.  
-2. **Token Expiry Test:** Behavior when JWT expires during checkout.  
-3. **Empty Cart Logic:** "Place Order" button disabled if cart total = 0 (unless Helping Hand item).  
-4. **Transaction Handling:** Consider Mongoose transactions for atomicity in high-traffic environments.  
-5. **Logging:** Implement backend logger (Winston/Morgan) for error tracking.  
-
----
-
-## 7. Conclusion
+## 6. Conclusion
 The Digital Canteen System, including the Helping Hand module, has been fully tested, debugged, and optimized. All critical bugs were resolved, automation implemented, and the system is now scalable, reliable, and production-ready. Functional and integration tests confirm consistent behavior across mobile and web platforms.
